@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Guarda-Roupa Lisboa</title>
+<style>
+/* Tokens visuais — tema claro de alto contraste, mobile-first */
+:root{
+  --bg:#f8fafc;--card:#ffffff;--soft:#f1f5f9;--bd:#e2e8f0;--bd2:#cbd5e1;
+  --tx:#0f172a;--tx2:#475569;--mut:#64748b;
+  --acc:#2563eb;--acc-bg:#eff6ff;--acc-bd:#bfdbfe;
+  --g:#16a34a;--g-bg:#f0fdf4;--g-bd:#86efac;--g-tx:#15803d;
+  --y:#f59e0b;--y-bg:#fffbeb;--y-bd:#fcd34d;--y-tx:#b45309;
+  --r:#dc2626;--r-bg:#fef2f2;--r-bd:#fca5a5;--r-tx:#b91c1c;
+  --p:#7c3aed;--p-bg:#f5f3ff;--p-bd:#ddd6fe;
+  --sh:0 1px 3px rgba(15,23,42,.06);--sh2:0 14px 32px rgba(15,23,42,.18);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15.5px;line-height:1.45;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+@media(min-width:768px){body{padding-bottom:36px}}
+h1,h2,h3,p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button,label.chk,.tog-card,summary{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button{border:0;background:none;user-select:none}
+button:disabled{opacity:.4;cursor:not-allowed}
+.hidden{display:none!important}
+/* Cabeçalho e Navegação */
+.hdr{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.96);border-bottom:1px solid var(--bd);backdrop-filter:blur(8px)}
+.hdr-in,.dnav,.wrap{max-width:1020px;margin:0 auto}
+.hdr-in{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.b-ico{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.b-tit{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b-sub{font-size:.76rem;color:var(--mut);display:block}
+.dnav{display:none;padding:0 14px 10px;gap:8px}
+@media(min-width:768px){.dnav{display:flex}}
+.ntab{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:8px 15px;border-radius:11px;font-weight:750;font-size:.9rem;color:var(--tx2)}
+.ntab.active{background:var(--soft);color:var(--tx);box-shadow:inset 0 0 0 1.5px var(--bd2)}
+.nbdg{min-width:22px;height:22px;padding:0 6px;border-radius:999px;font-size:.74rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--bd);color:var(--tx2)}
+.nbdg.alert{background:var(--r-bg);color:var(--r);border-color:var(--r-bd)}
+.mnav{position:fixed;bottom:0;left:0;right:0;z-index:45;background:rgba(255,255,255,.98);border-top:1px solid var(--bd);display:grid;grid-template-columns:repeat(4,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));gap:4px;box-shadow:0 -4px 14px rgba(15,23,42,.08)}
+@media(min-width:768px){.mnav{display:none}}
+.mtab{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;border-radius:11px;font-size:.73rem;font-weight:750;color:var(--mut)}
+.mtab.active{background:var(--soft);color:var(--tx)}
+.mdot{position:absolute;top:3px;right:calc(50% - 22px);min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:var(--r);color:#fff;font-size:.68rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+/* Layout, Cartões e Botões */
+.wrap{padding:14px}
+.panel{display:none}.panel.active{display:block}
+.banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:10px 13px;border-radius:12px;font-size:.84rem;margin-bottom:12px;border:1px solid var(--y-bd);background:var(--y-bg);color:#92400e}
+.banner.err{background:var(--r-bg);border-color:var(--r-bd);color:#991b1b}
+.sec-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin:18px 0 10px}
+.sec-t{font-size:1.05rem;font-weight:800;display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.sec-s{font-size:.82rem;color:var(--tx2);margin-top:2px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:15px;box-shadow:var(--sh)}
+.g2{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:680px){.g2{grid-template-columns:repeat(2,1fr)}}
+.g-goals{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+@media(min-width:740px){.g-goals{grid-template-columns:repeat(4,1fr)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:8px 13px;border-radius:11px;font-size:.86rem;font-weight:750;white-space:nowrap;transition:transform .08s}
+.btn:active:not(:disabled){transform:scale(.97)}
+.btn-p{background:var(--g);color:#fff}.btn-s{background:var(--card);border:1px solid var(--bd2);color:var(--tx)}
+.btn-a{background:var(--acc-bg);border:1px solid var(--acc-bd);color:var(--acc)}
+.btn-pad{background:var(--p-bg);border:1px solid var(--p-bd);color:var(--p)}
+.btn-d{background:var(--r);color:#fff}.btn-ds{background:var(--r-bg);border:1px solid var(--r-bd);color:var(--r)}
+.btn-g{color:var(--tx2);padding:8px 10px}.btn-full{width:100%}
+.btn-ico{width:44px;height:44px;border-radius:11px;background:var(--soft);border:1px solid var(--bd);font-weight:800}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+.dg{background:var(--g)}.dy{background:var(--y)}.dr{background:var(--r)}
+.tg{color:var(--g-tx)}.tr{color:var(--r-tx)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:.74rem;font-weight:750;background:var(--soft);border:1px solid var(--bd);color:var(--tx2)}
+.pill.g{background:var(--g-bg);border-color:var(--g-bd);color:var(--g-tx)}
+.pill.y{background:var(--y-bg);border-color:var(--y-bd);color:var(--y-tx)}
+.pill.r{background:var(--r-bg);border-color:var(--r-bd);color:var(--r-tx)}
+.pill.a{background:var(--acc-bg);border-color:var(--acc-bd);color:var(--acc)}
+.pill.p{background:var(--p-bg);border-color:var(--p-bd);color:var(--p)}
+/* Painel de Autonomia (8 Pilares) */
+.auto-card{background:linear-gradient(180deg,#fff 0%,#f8fafc 100%);border:1px solid var(--bd);border-radius:16px;padding:15px;margin-bottom:14px;box-shadow:var(--sh)}
+.auto-main{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.auto-box{min-width:74px;height:74px;padding:0 8px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid transparent;flex-shrink:0}
+.auto-box.g{background:var(--g-bg);border-color:var(--g-bd);color:var(--g-tx)}
+.auto-box.y{background:var(--y-bg);border-color:var(--y-bd);color:var(--y-tx)}
+.auto-box.r{background:var(--r-bg);border-color:var(--r-bd);color:var(--r-tx)}
+.auto-num{font-size:1.5rem;font-weight:850;line-height:1;font-variant-numeric:tabular-nums}
+.auto-unit{font-size:.69rem;font-weight:800;text-transform:uppercase;margin-top:3px}
+.auto-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.alert-box{padding:9px 12px;border-radius:11px;font-size:.83rem;font-weight:700;margin-bottom:10px;border:1px solid var(--r-bd);background:var(--r-bg);color:#991b1b}
+.alert-box.ideal{border-color:var(--acc-bd);background:var(--acc-bg);color:#1e40af}
+.pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:760px){.pillars{grid-template-columns:repeat(4,1fr)}}
+.pbox{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.pbox.bad{background:var(--r-bg);border-color:var(--r-bd)}
+.pbox.ok{background:var(--g-bg);border-color:var(--g-bd)}
+.pbox.star{background:linear-gradient(180deg,#f0fdf4,#eff6ff);border-color:var(--acc-bd)}
+.ptop{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.plbl{font-size:.78rem;font-weight:800}
+.pday{font-size:.7rem;font-weight:800;padding:2px 6px;border-radius:999px;background:var(--soft);color:var(--tx2);white-space:nowrap}
+.pday.ok{background:#dcfce7;color:var(--g-tx)}.pday.bad{background:#fee2e2;color:var(--r-tx)}.pday.star{background:#dbeafe;color:#1d4ed8}
+.pval{font-size:.88rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.25}
+.psub{font-size:.72rem;color:var(--mut);line-height:1.3}
+.psub.bad{color:var(--r-tx);font-weight:750}
+.bar-wrap{position:relative;height:8px;border-radius:999px;background:rgba(15,23,42,.09);margin:2px 0}
+.bar-inner{height:100%;border-radius:999px;overflow:hidden;display:flex;width:100%}
+.bar-g{height:100%;background:var(--g)}.bar-y{height:100%;background:var(--y)}
+.bar-mark{position:absolute;top:-2px;bottom:-2px;width:2px;background:#0f172a;border-radius:2px;z-index:2}
+/* Steppers, Inputs e Filtros */
+.uw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.uw-box{background:var(--bg);border:1px solid var(--bd);border-radius:11px;padding:9px 6px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.uw-box.g{border-top:3px solid var(--g)}.uw-box.r{border-top:3px solid var(--r)}
+.step{display:inline-flex;align-items:center;gap:5px}
+.sbtn{width:44px;height:44px;border-radius:10px;background:var(--card);border:1px solid var(--bd2);font-size:1.15rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+.sval{min-width:24px;text-align:center;font-size:1.06rem;font-weight:800;font-variant-numeric:tabular-nums}
+.num-in{width:62px;height:44px;text-align:center;font-weight:800;border-radius:10px;border:1px solid var(--bd2);background:var(--card);font-variant-numeric:tabular-nums}
+.fbar{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.frow{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:640px){.frow{grid-template-columns:1fr 220px}}
+.inp,.sel,.txa{width:100%;background:var(--card);border:1px solid var(--bd2);border-radius:11px;padding:10px 12px;min-height:44px;font-size:.93rem}
+.inp:focus,.sel:focus,.txa:focus,.num-in:focus{outline:2px solid var(--acc);border-color:var(--acc)}
+.fpills{display:flex;flex-wrap:wrap;gap:6px}
+.fpill{min-height:44px;padding:6px 13px;border-radius:999px;font-size:.82rem;font-weight:750;background:var(--card);border:1px solid var(--bd2);color:var(--tx2);display:inline-flex;align-items:center;gap:5px}
+.fpill.active{background:var(--tx);border-color:var(--tx);color:#fff}
+.fpill.g.active{background:var(--g-bg);border-color:var(--g);color:var(--g-tx)}
+.fpill.y.active{background:var(--y-bg);border-color:var(--y);color:var(--y-tx)}
+.fpill.r.active{background:var(--r-bg);border-color:var(--r);color:var(--r-tx)}
+/* Categorias e Cartões */
+.cat-stack{display:flex;flex-direction:column;gap:14px}
+.cat-blk{background:var(--card);border:1px solid var(--bd);border-radius:15px;padding:13px;box-shadow:var(--sh)}
+.cat-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-bottom:9px;margin-bottom:10px;border-bottom:1px solid var(--bd)}
+.cat-l{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.icard{background:var(--bg);border:1px solid var(--bd);border-left:5px solid var(--bd2);border-radius:13px;padding:12px;display:flex;flex-direction:column;gap:9px}
+.icard.verde{border-left-color:var(--g)}.icard.amarelo{border-left-color:var(--y)}.icard.vermelho{border-left-color:var(--r)}
+.icard.missing{border-style:dashed;border-left-style:solid;border-left-color:var(--r)}
+.itop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.iname{font-size:.95rem;font-weight:800;line-height:1.3;word-break:break-word}
+.uses{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.ucnt{font-size:.76rem;font-weight:750;padding:5px 8px;border-radius:8px;background:var(--card);border:1px solid var(--bd);color:var(--tx2)}
+.ubtn{min-height:44px;min-width:44px;padding:5px 9px;border-radius:9px;font-size:.79rem;font-weight:750;background:var(--card);border:1px solid var(--bd2)}
+.traf{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--card);padding:3px;border-radius:12px;border:1px solid var(--bd)}
+.traf.bin{grid-template-columns:repeat(2,1fr)}
+.tbtn{min-height:44px;border-radius:9px;font-size:.82rem;font-weight:750;color:var(--mut);display:inline-flex;align-items:center;justify-content:center;gap:5px}
+.tbtn.on-verde{background:var(--g-bg);color:var(--g-tx);box-shadow:inset 0 0 0 1.5px var(--g-bd)}
+.tbtn.on-amarelo{background:var(--y-bg);color:var(--y-tx);box-shadow:inset 0 0 0 1.5px var(--y-bd)}
+.tbtn.on-vermelho{background:var(--r-bg);color:var(--r-tx);box-shadow:inset 0 0 0 1.5px var(--r-bd)}
+.rrow{display:flex;flex-wrap:wrap;gap:6px}
+.rchip{min-height:44px;padding:6px 11px;border-radius:999px;font-size:.79rem;font-weight:700;background:var(--card);border:1px solid var(--bd2);color:var(--tx2)}
+.rchip.on-amarelo{background:var(--y-bg);border-color:var(--y);color:var(--y-tx)}
+.rchip.on-vermelho{background:var(--r-bg);border-color:var(--r);color:var(--r-tx)}
+.inote{font-size:.82rem;color:var(--tx2);background:var(--card);border:1px dashed var(--bd2);border-radius:9px;padding:7px 10px}
+.ifoot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding-top:8px;border-top:1px solid var(--bd);margin-top:auto}
+.ifoot-g{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.scard{background:var(--card);border:1px solid var(--bd);border-left:5px solid var(--acc);border-radius:13px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--sh)}
+.scard.padel{border-left-color:var(--p)}
+/* Mala & Sync */
+.subh{font-size:.78rem;font-weight:800;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em;margin:13px 0 7px}
+.chk{display:flex;align-items:center;gap:10px;min-height:48px;padding:9px 11px;background:var(--bg);border:1px solid var(--bd);border-radius:11px;margin-bottom:6px}
+.chk input{width:20px;height:20px;accent-color:var(--g);flex-shrink:0}
+.chk.red input{accent-color:var(--r)}
+details.opt-det{margin:8px 0;border-radius:11px;padding:4px 10px}
+details.opt-det.yel{border:1px solid var(--y-bd);background:var(--y-bg)}
+details.opt-det.grn{border:1px solid var(--g-bd);background:var(--g-bg)}
+details.opt-det summary{list-style:none;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.85rem;font-weight:750}
+details.opt-det.yel summary{color:#92400e}
+details.opt-det.grn summary{color:#166534}
+details.opt-det summary::-webkit-details-marker{display:none}
+.uw-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:var(--bg);border:1px solid var(--bd);border-radius:11px;padding:10px}
+.gbox{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:6px;text-align:center}
+.code-a{width:100%;min-height:150px;background:var(--bg);border:1px solid var(--bd2);border-radius:11px;padding:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;resize:vertical}
+.hitem{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:9px;font-size:.82rem;margin-top:6px}
+.empty{text-align:center;padding:18px 14px;background:var(--card);border:1px dashed var(--bd2);border-radius:12px;color:var(--tx2);font-size:.88rem}
+.tog-card{display:flex;align-items:flex-start;gap:10px;padding:11px;border-radius:11px;background:var(--p-bg);border:1.5px solid var(--p-bd)}
+.tog-card input{width:20px;height:20px;margin-top:2px;accent-color:var(--p)}
+/* Modais e Toasts */
+.mbd{position:fixed;inset:0;z-index:80;background:rgba(15,23,42,.55);display:none;align-items:flex-end;justify-content:center;padding:10px}
+@media(min-width:600px){.mbd{align-items:center}}
+.mbd.open{display:flex}
+.mbox{width:100%;max-width:480px;max-height:90vh;overflow-y:auto;background:var(--card);border:1px solid var(--bd2);border-radius:18px;padding:16px;box-shadow:var(--sh2)}
+.mhd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.fg{margin-bottom:12px}.fl{display:block;font-size:.82rem;font-weight:750;color:var(--tx2);margin-bottom:5px}
+.mft{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;margin-top:14px;padding-top:11px;border-top:1px solid var(--bd)}
+.toasts{position:fixed;top:12px;left:12px;right:12px;z-index:100;display:flex;flex-direction:column;align-items:center;gap:7px;pointer-events:none}
+@media(min-width:640px){.toasts{left:auto;align-items:flex-end}}
+.toast{background:#0f172a;color:#fff;border-left:5px solid var(--g);border-radius:11px;padding:10px 14px;font-size:.85rem;font-weight:650;box-shadow:var(--sh2);max-width:420px}
+.toast.err{border-left-color:var(--r)}.toast.info{border-left-color:var(--acc)}
+</style>
+</head>
+<body>
+<!-- Cabeçalho principal -->
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="brand">
+      <div class="b-ico" aria-hidden="true">👕</div>
+      <div>
+        <div class="b-tit">Guarda-Roupa Lisboa</div>
+        <span class="b-sub">Autonomia 4 dias (Seg–Qui) • Lisboa ↔ Coimbra</span>
+      </div>
+    </div>
+    <button type="button" class="btn btn-p" data-action="open-add-item">+ Peça</button>
+  </div>
+  <nav class="dnav" aria-label="Navegação principal">
+    <button type="button" class="ntab active" data-action="switch-tab" data-tab="lisboa">Lisboa <span class="nbdg" id="bd-l">0</span></button>
+    <button type="button" class="ntab" data-action="switch-tab" data-tab="mala">Mala <span class="nbdg alert hidden" id="bd-m">0</span></button>
+    <button type="button" class="ntab" data-action="switch-tab" data-tab="casa">Em Casa <span class="nbdg" id="bd-c">0</span></button>
+    <button type="button" class="ntab" data-action="switch-tab" data-tab="sync">Sync &amp; Metas</button>
+  </nav>
+</header>
+
+<main class="wrap">
+  <!-- Banners de erro global e modo memória -->
+  <div id="err-banner" class="banner err hidden" role="alert"></div>
+  <div id="mem-banner" class="banner hidden">
+    <span><strong>Modo memória temporária</strong> — armazenamento local bloqueado neste ambiente. Usa <strong>Copiar JSON</strong> para guardar.</span>
+    <button type="button" class="btn btn-s" data-action="copy-json">Copiar JSON</button>
+  </div>
+
+  <!-- SEPARADOR 1: LISBOA -->
+  <section id="view-lisboa" class="panel active">
+    <div id="autonomy-box"></div>
+
+    <div class="sec-h" style="margin-top:6px">
+      <div><h2 class="sec-t">Roupa Interior <span class="pill"><span class="dot dg"></span>Verde / <span class="dot dr"></span>Vermelho</span></h2>
+      <p class="sec-s">Estritamente binário: Limpo (Verde) ou Sujo (Vermelho)</p></div>
+    </div>
+    <div id="uw-box" class="g2"></div>
+
+    <div class="sec-h">
+      <div><h2 class="sec-t">🌙 Pijama em Lisboa <span class="pill"><span class="dot dg"></span>Verde / <span class="dot dr"></span>Vermelho</span></h2>
+      <p class="sec-s">4 peças fixas • Tens sempre uma reserva limpa em Coimbra para trocar</p></div>
+    </div>
+    <div id="lisboa-pijama" class="g2"></div>
+
+    <div class="sec-h">
+      <div><h2 class="sec-t">Peças em Lisboa (6 Categorias)</h2>
+      <p class="sec-s">Verde + Amarelo contam para a autonomia</p></div>
+      <button type="button" class="btn btn-p" data-action="open-add-item" data-loc="lisboa">+ Adicionar peça</button>
+    </div>
+    <div class="fbar">
+      <div class="frow">
+        <input type="search" id="q-lisboa" class="inp" data-action="search-l" placeholder="Pesquisar por nome, motivo ou nota...">
+        <select id="cat-lisboa" class="sel" data-action="cat-l" aria-label="Filtrar categoria"></select>
+      </div>
+      <div class="fpills" id="st-pills">
+        <button type="button" class="fpill active" data-action="st-l" data-st="all">Todos</button>
+        <button type="button" class="fpill g" data-action="st-l" data-st="verde"><span class="dot dg"></span>Verde</button>
+        <button type="button" class="fpill y" data-action="st-l" data-st="amarelo"><span class="dot dy"></span>Amarelo</button>
+        <button type="button" class="fpill r" data-action="st-l" data-st="vermelho"><span class="dot dr"></span>Vermelho</button>
+      </div>
+    </div>
+    <div id="lisboa-cats"></div>
+
+    <div class="sec-h" style="margin-top:20px">
+      <div><h2 class="sec-t">Calçado / Sapatilhas em Lisboa <span class="pill" id="cnt-sl">0</span></h2>
+      <p class="sec-s">Sem estado de sujidade • Mínimo 1 / Ideal 2 pares de uso diário (não-Padel)</p></div>
+      <button type="button" class="btn btn-a" data-action="open-add-shoe" data-loc="lisboa">+ Adicionar par</button>
+    </div>
+    <div id="lisboa-shoes"></div>
+  </section>
+
+  <!-- SEPARADOR 2: MALA -->
+  <section id="view-mala" class="panel"><div id="mala-box"></div></section>
+
+  <!-- SEPARADOR 3: EM CASA (COIMBRA) -->
+  <section id="view-casa" class="panel">
+    <div class="sec-h" style="margin-top:4px">
+      <div><h2 class="sec-t">🌙 Pijama · Reserva limpa sempre em Coimbra</h2>
+      <p class="sec-s">Estado real em Lisboa visível abaixo com atalhos rápidos para trazer ou trocar</p></div>
+    </div>
+    <div id="casa-pijama" class="g2"></div>
+
+    <div class="sec-h">
+      <div><h2 class="sec-t">Peças Em Casa (Coimbra · 6 Categorias)</h2>
+      <p class="sec-s">Estado e motivos de lavagem/arranjo visíveis</p></div>
+      <button type="button" class="btn btn-s" data-action="open-add-item" data-loc="casa">+ Adicionar em Casa</button>
+    </div>
+    <div id="casa-cats"></div>
+
+    <div class="sec-h" style="margin-top:20px">
+      <div><h2 class="sec-t">Calçado / Sapatilhas Em Casa <span class="pill" id="cnt-sc">0</span></h2></div>
+      <button type="button" class="btn btn-a" data-action="open-add-shoe" data-loc="casa">+ Adicionar par</button>
+    </div>
+    <div id="casa-shoes"></div>
+  </section>
+
+  <!-- SEPARADOR 4: SYNC & METAS -->
+  <section id="view-sync" class="panel"><div id="sync-box"></div></section>
+</main>
+
+<!-- Navegação inferior móvel -->
+<nav class="mnav" aria-label="Navegação móvel">
+  <button type="button" class="mtab active" data-action="switch-tab" data-tab="lisboa"><span>🏠</span>Lisboa</button>
+  <button type="button" class="mtab" data-action="switch-tab" data-tab="mala"><span>🧳</span>Mala<span class="mdot hidden" id="bm-m">0</span></button>
+  <button type="button" class="mtab" data-action="switch-tab" data-tab="casa"><span>📦</span>Em Casa</button>
+  <button type="button" class="mtab" data-action="switch-tab" data-tab="sync"><span>⚙️</span>Sync &amp; Metas</button>
+</nav>
+
+<!-- Modal Peça Normal -->
+<div class="mbd" id="m-item" data-action="bd-close" data-modal="m-item" role="dialog" aria-modal="true">
+  <div class="mbox">
+    <div class="mhd"><h3 id="mi-tit">Adicionar peça</h3><button type="button" class="btn-ico" data-action="close-modal" data-modal="m-item">✕</button></div>
+    <form id="f-item" data-action="sub-item">
+      <input type="hidden" id="fi-id">
+      <div class="fg"><label class="fl" for="fi-name">Nome da peça *</label><input id="fi-name" class="inp" required maxlength="80" placeholder="Ex: Camisa azul, Casaco preto"></div>
+      <div class="g2" style="gap:9px">
+        <div class="fg"><label class="fl" for="fi-cat">Categoria</label><select id="fi-cat" class="sel"></select></div>
+        <div class="fg"><label class="fl" for="fi-loc">Localização</label><select id="fi-loc" class="sel"><option value="lisboa">Lisboa</option><option value="casa">Em Casa (Coimbra)</option></select></div>
+      </div>
+      <div class="fg">
+        <label class="fl">Estado</label>
+        <div class="traf" id="fi-traf">
+          <button type="button" class="tbtn on-verde" data-action="fi-st" data-st="verde"><span class="dot dg"></span>Verde</button>
+          <button type="button" class="tbtn" data-action="fi-st" data-st="amarelo"><span class="dot dy"></span>Amarelo</button>
+          <button type="button" class="tbtn" data-action="fi-st" data-st="vermelho"><span class="dot dr"></span>Vermelho</button>
+        </div>
+      </div>
+      <div class="fg hidden" id="fi-rgrp"><label class="fl">Motivos</label><div class="rrow" id="fi-reasons"></div></div>
+      <div class="fg"><label class="fl" for="fi-note">Nota (opcional)</label><input id="fi-note" class="inp" maxlength="140" placeholder="Ex: Falta ferro, botão solto"></div>
+      <div class="mft"><button type="button" class="btn btn-s" data-action="close-modal" data-modal="m-item">Cancelar</button><button type="submit" class="btn btn-p">Guardar</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Calçado -->
+<div class="mbd" id="m-shoe" data-action="bd-close" data-modal="m-shoe" role="dialog" aria-modal="true">
+  <div class="mbox">
+    <div class="mhd"><h3 id="ms-tit">Adicionar calçado</h3><button type="button" class="btn-ico" data-action="close-modal" data-modal="m-shoe">✕</button></div>
+    <form id="f-shoe" data-action="sub-shoe">
+      <input type="hidden" id="fs-id">
+      <div class="fg"><label class="fl" for="fs-name">Nome do calçado *</label><input id="fs-name" class="inp" data-action="shoe-name" required maxlength="80" placeholder="Ex: Sapatilhas brancas, Sapatilhas Padel"></div>
+      <div class="fg"><label class="fl" for="fs-loc">Localização</label><select id="fs-loc" class="sel"><option value="lisboa">Lisboa</option><option value="casa">Em Casa (Coimbra)</option></select></div>
+      <div class="fg">
+        <label class="tog-card" for="fs-padel">
+          <input type="checkbox" id="fs-padel" data-action="shoe-padel-chg">
+          <div><div style="font-weight:800;color:#4c1d95">🎾 É calçado de Padel</div><div style="font-size:.78rem;color:#5b21b6">Não conta para a autonomia (Mín 1 / Ideal 2).</div></div>
+        </label>
+      </div>
+      <div class="fg"><label class="fl" for="fs-note">Nota (opcional)</label><input id="fs-note" class="inp" maxlength="140" placeholder="Ex: dia-a-dia, chuva, só padel"></div>
+      <div class="mft"><button type="button" class="btn btn-s" data-action="close-modal" data-modal="m-shoe">Cancelar</button><button type="submit" class="btn btn-p">Guardar</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Importar JSON -->
+<div class="mbd" id="m-imp" data-action="bd-close" data-modal="m-imp" role="dialog" aria-modal="true">
+  <div class="mbox">
+    <div class="mhd"><h3>Importar Backup JSON</h3><button type="button" class="btn-ico" data-action="close-modal" data-modal="m-imp">✕</button></div>
+    <div class="fg"><label class="fl" for="imp-file">Ficheiro .json (opcional)</label><input type="file" id="imp-file" accept=".json,application/json" data-action="imp-file"></div>
+    <div class="fg"><label class="fl" for="imp-txt">Ou cola aqui o JSON</label><textarea id="imp-txt" class="code-a" placeholder='{"metas":...}'></textarea></div>
+    <div class="mft"><button type="button" class="btn btn-s" data-action="close-modal" data-modal="m-imp">Cancelar</button><button type="button" class="btn btn-p" data-action="do-import">Importar</button></div>
+  </div>
+</div>
+
+<!-- Modal Confirmação -->
+<div class="mbd" id="m-cfm" data-action="bd-close" data-modal="m-cfm" role="dialog" aria-modal="true">
+  <div class="mbox" style="max-width:410px">
+    <div class="mhd"><h3 id="mc-tit">Confirmar</h3><button type="button" class="btn-ico" data-action="close-modal" data-modal="m-cfm">✕</button></div>
+    <p id="mc-msg" style="font-size:.9rem;color:var(--tx2)"></p>
+    <div class="mft"><button type="button" class="btn btn-s" data-action="close-modal" data-modal="m-cfm">Cancelar</button><button type="button" class="btn btn-d" id="mc-ok" data-action="cfm-ok">Confirmar</button></div>
+  </div>
+</div>
+
+<!-- Modal Cópia Manual (Fallback sem alert) -->
+<div class="mbd" id="m-cpy" data-action="bd-close" data-modal="m-cpy" role="dialog" aria-modal="true">
+  <div class="mbox">
+    <div class="mhd"><h3 id="mcp-tit">Copiar texto</h3><button type="button" class="btn-ico" data-action="close-modal" data-modal="m-cpy">✕</button></div>
+    <p style="font-size:.82rem;color:var(--tx2);margin-bottom:8px">Seleciona e copia manualmente o conteúdo abaixo:</p>
+    <textarea id="mcp-txt" class="code-a" readonly style="min-height:190px"></textarea>
+    <div class="mft"><button type="button" class="btn btn-s" data-action="sel-cpy">Selecionar tudo</button><button type="button" class="btn btn-p" data-action="close-modal" data-modal="m-cpy">Fechar</button></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+// Captura global de erros para nunca falhar em silêncio
+function showErr(m){const b=document.getElementById('err-banner');if(b){b.textContent='Erro JS: '+m;b.classList.remove('hidden');}}
+window.onerror=m=>{showErr(String(m));return false;};
+window.addEventListener('unhandledrejection',e=>showErr(e&&e.reason?String(e.reason):'Promise rejeitada'));
+
+// Constantes de domínio
+const KEY='guarda_roupa_lisboa_state';
+const CATS=['Camisas','T-Shirts/Polos','Camisolas','Casacos','Calças/Calções','Outros'];
+const CICO={'Camisas':'👔','T-Shirts/Polos':'👕','Camisolas':'🧶','Casacos':'🧥','Calças/Calções':'👖','Outros':'🎒'};
+const TSHIRT_CAM_CATS=new Set(['Camisas','T-Shirts/Polos']);
+const REASONS=['Engelhado','Sujo','Estragado','Falta engomar'];
+const PIJ_REASONS=['Sujo','Estragado','Engelhado'];
+const ST_LBL={verde:'Verde',amarelo:'Amarelo',vermelho:'Vermelho'};
+const PIJ_DEFS=[
+  {id:'camisola_pijama',name:'Camisola de pijama',required:true},
+  {id:'calcas_pijama',name:'Calças de pijama',required:true},
+  {id:'meias_grossas',name:'Meias grossas',required:true},
+  {id:'tshirt_pijama',name:'T-shirt de pijama',required:false}
+];
+const PIJ_MAP=Object.fromEntries(PIJ_DEFS.map(p=>[p.id,p]));
+const LEG_PIJ={
+  camisola_pijama:'camisola_pijama',camisola:'camisola_pijama',pij_camisola:'camisola_pijama',pj_camisola:'camisola_pijama',
+  calcas_pijama:'calcas_pijama',calcas:'calcas_pijama',pij_calcas:'calcas_pijama',pj_calca:'calcas_pijama',pj_calcas:'calcas_pijama',
+  meias_grossas:'meias_grossas',pij_meias:'meias_grossas',pj_meias:'meias_grossas',
+  tshirt_pijama:'tshirt_pijama',tshirt:'tshirt_pijama',pij_tshirt:'tshirt_pijama',pj_tshirt:'tshirt_pijama'
+};
+const COAT_RX=/casaco|blus[aã]o|parka|sobretudo|imperme[aá]vel|jaqueta|blazer|corta-vento/i;
+const PADEL_RX=/padel/i;
+const DEF_METAS={days:4,boxers:4,meias:4,tops:4,camisolasMin:1,camisolasIdeal:3,casacosMin:1,casacosIdeal:2,calcas:2,sapatilhasMin:1,sapatilhasIdeal:2};
+
+// SafeStorage com fallback automático para memória e deteção de chaves legadas
+const SafeStorage=(function(){
+  const mem=Object.create(null);let temp=false;
+  try{localStorage.setItem('__grl_t','1');localStorage.removeItem('__grl_t');}catch(_){temp=true;}
+  return{
+    isTemp:()=>temp,
+    get(k){if(!temp){try{return localStorage.getItem(k);}catch(_){temp=true;}}return k in mem?mem[k]:null;},
+    set(k,v){mem[k]=v;if(!temp){try{localStorage.setItem(k,v);return true;}catch(_){temp=true;}}return false;},
+    findLegacy(){
+      if(temp)return null;
+      try{
+        const ks=[];
+        for(let i=0;i<localStorage.length;i++){
+          const k=localStorage.key(i);
+          if(k&&k!==KEY&&(k.startsWith('guarda_roupa_lisboa')||k.startsWith('guardaroupa_lisboa')))ks.push(k);
+        }
+        ks.sort().reverse();
+        for(const k of ks){const v=localStorage.getItem(k);if(v&&v.trim().startsWith('{'))return v;}
+      }catch(_){temp=true;}
+      return null;
+    }
+  };
+})();
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const clamp=(v,a,b,fb)=>{const n=parseInt(v,10);return Number.isFinite(n)?Math.min(b,Math.max(a,n)):fb;};
+const uid=p=>p+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6);
+const nowStr=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;};
+const normSt=s=>(s==='verde'||s==='green')?'verde':(s==='amarelo'||s==='yellow')?'amarelo':(s==='vermelho'||s==='red')?'vermelho':'verde';
+const normBin=s=>(s==='verde'||s==='green')?'verde':'vermelho';
+const normCat=(c,n)=>{
+  if(CATS.includes(c))return c;
+  const l=String(c||'').toLowerCase().trim();
+  if(l.includes('camisolas')&&l.includes('casacos'))return COAT_RX.test(n||'')?'Casacos':'Camisolas';
+  if(l.includes('camisa'))return 'Camisas';
+  if(l.includes('shirt')||l.includes('polo'))return 'T-Shirts/Polos';
+  if(l.includes('casaco'))return 'Casacos';
+  if(l.includes('camisola'))return 'Camisolas';
+  if(l.includes('cal'))return 'Calças/Calções';
+  return 'Outros';
+};
+const legPijId=it=>{
+  const k=LEG_PIJ[it?.fixedId]||LEG_PIJ[it?.id];if(k)return k;
+  if(String(it?.category||'').toLowerCase()==='pijama'){
+    const n=String(it?.name||'').toLowerCase();
+    if(n.includes('camisola'))return 'camisola_pijama';
+    if(n.includes('cal'))return 'calcas_pijama';
+    if(n.includes('meia'))return 'meias_grossas';
+    if(n.includes('shirt'))return 'tshirt_pijama';
+  }
+  return null;
+};
+const mkPij=(def,src={})=>{
+  const st=normBin(src.status);
+  const inL=typeof src.inLisboa==='boolean'?src.inLisboa:(src.location?src.location!=='casa':false);
+  return{
+    id:def.id,name:def.name,required:def.required,inLisboa:inL,status:st,
+    reasons:st==='verde'?[]:(Array.isArray(src.reasons)?src.reasons.filter(r=>PIJ_REASONS.includes(r)):[]),
+    uses:clamp(src.uses,0,999,0),
+    note:typeof src.note==='string'?src.note.trim().slice(0,140):''
+  };
+};
+
+// Dados de exemplo realistas (Verde + Amarelo + Vermelho, Pijama Verde + Vermelho + Em falta, Diário + Padel)
+function demoState(){
+  return{
+    metas:{...DEF_METAS},
+    underwear:{boxers:{verde:4,vermelho:1},meias:{verde:4,vermelho:1}},
+    pijama:[
+      mkPij(PIJ_DEFS[0],{inLisboa:true,status:'verde',uses:1}),
+      mkPij(PIJ_DEFS[1],{inLisboa:true,status:'verde',uses:1}),
+      mkPij(PIJ_DEFS[2],{inLisboa:true,status:'vermelho',reasons:['Sujo'],uses:3}),
+      mkPij(PIJ_DEFS[3],{inLisboa:false,status:'verde',uses:0})
+    ],
+    items:[
+      {id:'d1',name:'Camisa azul clara Oxford',category:'Camisas',location:'lisboa',status:'verde',reasons:[],uses:0,note:''},
+      {id:'d2',name:'Camisa vermelha às riscas',category:'Camisas',location:'lisboa',status:'amarelo',reasons:['Engelhado'],uses:1,note:'Ainda dá 1 dia'},
+      {id:'d3',name:'Camisa branca formal',category:'Camisas',location:'casa',status:'vermelho',reasons:['Sujo','Falta engomar'],uses:1,note:''},
+      {id:'d4',name:'Polo azul marinho',category:'T-Shirts/Polos',location:'lisboa',status:'verde',reasons:[],uses:0,note:''},
+      {id:'d5',name:'T-shirt preta básica',category:'T-Shirts/Polos',location:'lisboa',status:'verde',reasons:[],uses:0,note:'Boa p/ viagem'},
+      {id:'d6',name:'Camisola azul marinho malha',category:'Camisolas',location:'lisboa',status:'verde',reasons:[],uses:1,note:''},
+      {id:'d7',name:'Sweatshirt cinzenta',category:'Camisolas',location:'lisboa',status:'amarelo',reasons:['Engelhado'],uses:2,note:''},
+      {id:'d8',name:'Camisola bordeaux',category:'Camisolas',location:'casa',status:'verde',reasons:[],uses:0,note:'Pronta p/ atingir ideal 3'},
+      {id:'d9',name:'Casaco corta-vento preto',category:'Casacos',location:'lisboa',status:'verde',reasons:[],uses:2,note:''},
+      {id:'d10',name:'Blusão de ganga',category:'Casacos',location:'casa',status:'verde',reasons:[],uses:0,note:'Pronto p/ atingir ideal 2'},
+      {id:'d11',name:'Calças de ganga escuras',category:'Calças/Calções',location:'lisboa',status:'verde',reasons:[],uses:2,note:''},
+      {id:'d12',name:'Calças chino cinzentas',category:'Calças/Calções',location:'lisboa',status:'amarelo',reasons:['Engelhado'],uses:3,note:''},
+      {id:'d13',name:'Calças chino bege',category:'Calças/Calções',location:'casa',status:'verde',reasons:[],uses:0,note:''},
+      {id:'d14',name:'Equipamento de ginásio',category:'Outros',location:'lisboa',status:'vermelho',reasons:['Sujo'],uses:1,note:'Lavar na sexta'}
+    ],
+    shoes:[
+      {id:'s1',name:'Sapatilhas brancas',location:'lisboa',isPadel:false,note:'Uso diário'},
+      {id:'s2',name:'Sapatilhas Padel',location:'lisboa',isPadel:true,note:'Só jogos de padel'},
+      {id:'s3',name:'Ténis pretos',location:'casa',isPadel:false,note:'2.º par p/ atingir ideal'}
+    ],
+    history:[{time:nowStr(),text:'Exemplos carregados (Verdes, Amarelas, Vermelhas, Pijama V/R e Padel).'}]
+  };
+}
+
+function emptyState(curMetas){
+  return{
+    metas:{...DEF_METAS,...(curMetas||{})},
+    underwear:{boxers:{verde:0,vermelho:0},meias:{verde:0,vermelho:0}},
+    pijama:PIJ_DEFS.map(d=>mkPij(d,{inLisboa:false,status:'verde'})),
+    items:[],
+    shoes:[],
+    history:[{time:nowStr(),text:'Inventário limpo (pijama disponível na reserva de Coimbra).'}]
+  };
+}
+
+// Sanitização e migração automática de estruturas anteriores
+function sanitize(raw){
+  if(!raw||typeof raw!=='object')return demoState();
+  const rm=raw.metas||raw.goals||{};
+  const metas={
+    days:clamp(rm.days??rm.diasSemana,1,7,4),
+    boxers:clamp(rm.boxers,0,30,4),
+    meias:clamp(rm.meias,0,30,4),
+    tops:clamp(rm.tops,0,30,4),
+    camisolasMin:clamp(rm.camisolasMin,0,15,1),
+    camisolasIdeal:clamp(rm.camisolasIdeal??rm.camisolas,0,20,3),
+    casacosMin:clamp(rm.casacosMin,0,10,1),
+    casacosIdeal:clamp(rm.casacosIdeal,0,15,2),
+    calcas:clamp(rm.calcas??rm.bottoms,0,15,2),
+    sapatilhasMin:clamp(rm.sapatilhasMin??rm.calcadoMin??rm.calcado,0,10,1),
+    sapatilhasIdeal:clamp(rm.sapatilhasIdeal??rm.calcadoIdeal,0,10,2)
+  };
+  if(metas.camisolasIdeal<metas.camisolasMin)metas.camisolasIdeal=metas.camisolasMin;
+  if(metas.casacosIdeal<metas.casacosMin)metas.casacosIdeal=metas.casacosMin;
+  if(metas.sapatilhasIdeal<metas.sapatilhasMin)metas.sapatilhasIdeal=metas.sapatilhasMin;
+
+  // Roupa interior estritamente binária (qualquer amarelo antigo passa a vermelho)
+  const ruw=raw.underwear||raw.roupaInterior||{};
+  const binUw=o=>({verde:clamp(o?.verde??o?.green,0,99,0),vermelho:clamp(o?.vermelho??o?.red,0,99,0)+clamp(o?.amarelo,0,99,0)+clamp(o?.yellow,0,99,0)});
+  const underwear={boxers:binUw(ruw.boxers),meias:binUw(ruw.meias)};
+
+  // Pijama estritamente binário
+  const pjMap=Object.create(null);
+  const putPij=(id,src)=>{if(id&&PIJ_MAP[id]&&!pjMap[id])pjMap[id]=mkPij(PIJ_MAP[id],src||{});};
+  if(Array.isArray(raw.pijama))raw.pijama.forEach(p=>putPij(LEG_PIJ[p?.id],p));
+  else if(raw.pijama&&typeof raw.pijama==='object')Object.entries(raw.pijama).forEach(([k,v])=>putPij(LEG_PIJ[k]||LEG_PIJ[v?.id],v));
+
+  // Peças normais (migra pijama antigo e Camisolas/Casacos)
+  const rItems=Array.isArray(raw.items)?raw.items:(Array.isArray(raw.pecas)?raw.pecas:[]);
+  const items=[];
+  for(const i of rItems){
+    if(!i||typeof i.name!=='string'||!i.name.trim())continue;
+    const pid=legPijId(i);
+    if(pid){putPij(pid,i);continue;}
+    const st=normSt(i.status);
+    items.push({
+      id:typeof i.id==='string'&&i.id?i.id:uid('it'),
+      name:i.name.trim().slice(0,80),
+      category:normCat(i.category,i.name),
+      location:i.location==='casa'?'casa':'lisboa',
+      status:st,
+      reasons:st==='verde'?[]:(Array.isArray(i.reasons)?i.reasons.filter(r=>REASONS.includes(r)):[]),
+      uses:clamp(i.uses,0,999,0),
+      note:typeof i.note==='string'?i.note.trim().slice(0,140):''
+    });
+  }
+  const pijama=PIJ_DEFS.map(d=>pjMap[d.id]||mkPij(d,{inLisboa:false,status:'verde'}));
+
+  // Calçado (migra calcado -> shoes)
+  const rSh=Array.isArray(raw.shoes)?raw.shoes:(Array.isArray(raw.calcado)?raw.calcado:[]);
+  const shoes=rSh.filter(c=>c&&typeof c.name==='string'&&c.name.trim()).map(c=>({
+    id:typeof c.id==='string'&&c.id?c.id:uid('sh'),
+    name:c.name.trim().slice(0,80),
+    location:c.location==='casa'?'casa':'lisboa',
+    isPadel:typeof c.isPadel==='boolean'?c.isPadel:PADEL_RX.test(c.name),
+    note:typeof c.note==='string'?c.note.trim().slice(0,140):''
+  }));
+
+  const rH=Array.isArray(raw.history)?raw.history:(Array.isArray(raw.historico)?raw.historico:[]);
+  const history=rH.filter(h=>h&&typeof h.text==='string').slice(0,15).map(h=>({time:h.time||nowStr(),text:h.text}));
+  return{metas,underwear,pijama,items,shoes,history};
+}
+
+let state=demoState();
+const ui={
+  tab:'lisboa',qL:'',stL:'all',catL:'all',prevMd:false,
+  fiSt:'verde',fiR:[],shEdit:false,shTouched:false,cfmFn:null,
+  mRet:new Set(),mRetSync:new Set(),mRetPij:new Set(),mRetPijSync:new Set(),mRetSh:new Set(),mRetB:null,mRetM:null,
+  mGo:new Set(),mGoPij:new Set(),mGoSh:new Set(),mGoB:null,mGoM:null
+};
+
+function log(txt){state.history.unshift({time:nowStr(),text:txt});if(state.history.length>15)state.history.length=15;}
+function save(){SafeStorage.set(KEY,JSON.stringify(state));}
+function load(){
+  try{
+    const cur=SafeStorage.get(KEY);
+    if(cur){state=sanitize(JSON.parse(cur));save();return;}
+    const leg=SafeStorage.findLegacy();
+    if(leg){state=sanitize(JSON.parse(leg));log('Dados migrados automaticamente.');save();return;}
+  }catch(_){}
+  state=demoState();save();
+}
+function resetMala(){
+  ui.mRet.clear();ui.mRetSync.clear();ui.mRetPij.clear();ui.mRetPijSync.clear();ui.mRetSh.clear();
+  ui.mGo.clear();ui.mGoPij.clear();ui.mGoSh.clear();
+  ui.mRetB=ui.mRetM=ui.mGoB=ui.mGoM=null;
+}
+
+// Motor de Autonomia (8 Pilares)
+const atLoc=(arr,loc)=>arr.filter(x=>x.location===loc);
+function cntSt(arr){let v=0,a=0,r=0;for(const i of arr){if(i.status==='verde')v++;else if(i.status==='amarelo')a++;else r++;}return{v,a,r,u:v+a};}
+
+function computeMetrics(){
+  const m=state.metas,D=Math.max(1,m.days);
+  const li=atLoc(state.items,'lisboa'),ls=atLoc(state.shoes,'lisboa');
+  const bV=state.underwear.boxers.verde,mV=state.underwear.meias.verde;
+  const tc=cntSt(li.filter(i=>TSHIRT_CAM_CATS.has(i.category)));
+  const cam=cntSt(li.filter(i=>i.category==='Camisolas'));
+  const cas=cntSt(li.filter(i=>i.category==='Casacos'));
+  const cal=cntSt(li.filter(i=>i.category==='Calças/Calções'));
+  const dailySh=ls.filter(s=>!s.isPadel).length,padelSh=ls.filter(s=>s.isPadel).length;
+
+  const pjMissing=[];let pjV=0;
+  for(const d of PIJ_DEFS){
+    if(!d.required)continue;
+    const p=state.pijama.find(x=>x.id===d.id);
+    if(p&&p.inLisboa&&p.status==='verde')pjV++;
+    else pjMissing.push(`${d.name} (${!p||!p.inLisboa?'em falta':'Vermelho'})`);
+  }
+  const pjT=state.pijama.find(x=>x.id==='tshirt_pijama');
+  const pjOpt=pjT?(pjT.inLisboa?`T-shirt: Lisboa · ${ST_LBL[pjT.status]} (Opcional)`:'T-shirt: Em falta (Opcional)'):'';
+
+  const pillars=[
+    {k:'boxers',lbl:'Boxers',kind:'bin',v:bV,a:0,u:bV,min:m.boxers,ideal:m.boxers,days:m.boxers?Math.floor(bV/m.boxers*D):Infinity},
+    {k:'meias',lbl:'Meias',kind:'bin',v:mV,a:0,u:mV,min:m.meias,ideal:m.meias,days:m.meias?Math.floor(mV/m.meias*D):Infinity},
+    {k:'tops',lbl:'T-shirt/Camisas',kind:'std',v:tc.v,a:tc.a,u:tc.u,min:m.tops,ideal:m.tops,days:m.tops?Math.floor(tc.u/m.tops*D):Infinity,sub:'Camisas + T-Shirts/Polos'},
+    {k:'camisolas',lbl:'Camisolas',kind:'mi',v:cam.v,a:cam.a,u:cam.u,min:m.camisolasMin,ideal:m.camisolasIdeal,days:m.camisolasMin?(cam.u>=m.camisolasMin?D:0):Infinity},
+    {k:'casacos',lbl:'Casacos',kind:'mi',v:cas.v,a:cas.a,u:cas.u,min:m.casacosMin,ideal:m.casacosIdeal,days:m.casacosMin?(cas.u>=m.casacosMin?D:0):Infinity},
+    {k:'calcas',lbl:'Calças/Calções',kind:'std',v:cal.v,a:cal.a,u:cal.u,min:m.calcas,ideal:m.calcas,days:m.calcas?Math.floor(cal.u/m.calcas*D):Infinity},
+    {k:'sapatilhas',lbl:'Sapatilhas / Calçado útil',kind:'sh',v:dailySh,a:0,u:dailySh,min:m.sapatilhasMin,ideal:m.sapatilhasIdeal,days:m.sapatilhasMin?(dailySh>=m.sapatilhasMin?D:0):Infinity,padel:padelSh,onlyPadel:m.sapatilhasMin>0&&dailySh===0&&padelSh>0},
+    {k:'pijama',lbl:'Pijama',kind:'pj',v:pjV,a:0,u:pjV,min:3,ideal:3,days:pjV===3?D:0,missing:pjMissing,optTxt:pjOpt}
+  ];
+
+  const active=pillars.filter(p=>p.min>0);
+  const rawMin=active.length?Math.min(...active.map(p=>p.days)):D;
+  const days=rawMin===Infinity?D:rawMin;
+  const minCovered=days>=D;
+  const bottlenecks=minCovered?[]:active.filter(p=>p.days===days).map(p=>p.lbl);
+
+  const idealGaps=[];
+  const gCam=Math.max(0,m.camisolasIdeal-cam.u),gCas=Math.max(0,m.casacosIdeal-cas.u),gSh=Math.max(0,m.sapatilhasIdeal-dailySh);
+  if(gCam>0)idealGaps.push(`+${gCam} camisola${gCam>1?'s':''}`);
+  if(gCas>0)idealGaps.push(`+${gCas} casaco${gCas>1?'s':''}`);
+  if(gSh>0)idealGaps.push(`+${gSh} sapatilha${gSh>1?'s':''}`);
+  const allIdeal=minCovered&&idealGaps.length===0;
+
+  const minDef={
+    boxers:Math.max(0,m.boxers-bV),meias:Math.max(0,m.meias-mV),
+    tops:Math.max(0,m.tops-tc.u),camisolas:Math.max(0,m.camisolasMin-cam.u),
+    casacos:Math.max(0,m.casacosMin-cas.u),calcas:Math.max(0,m.calcas-cal.u),
+    sapatilhas:Math.max(0,m.sapatilhasMin-dailySh),pijama:pjMissing
+  };
+  return{D,days,minCovered,allIdeal,bottlenecks,idealGaps,pillars,minDef};
+}
+
+// Modais, Toasts e Cópia segura com fallback em modal (zero alert/confirm)
+function toast(msg,type){
+  const t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;
+  $('toasts').appendChild(t);setTimeout(()=>t.remove(),2800);
+}
+function openModal(id){$(id).classList.add('open');}
+function closeModal(id){$(id).classList.remove('open');if(id==='m-cfm')ui.cfmFn=null;}
+function confirmDlg(tit,msg,okTxt,cls,fn){
+  $('mc-tit').textContent=tit;$('mc-msg').textContent=msg;
+  const b=$('mc-ok');b.textContent=okTxt;b.className='btn '+(cls||'btn-d');
+  ui.cfmFn=fn;openModal('m-cfm');
+}
+function copyText(txt,okMsg,tit){
+  const openFb=()=>{$('mcp-tit').textContent=tit;$('mcp-txt').value=txt;openModal('m-cpy');setTimeout(()=>{$('mcp-txt').focus();$('mcp-txt').select();},50);};
+  try{
+    const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand('copy');ta.remove();
+    if(ok){toast(okMsg);return;}
+  }catch(_){}
+  openFb();
+}
+
+// Render: Autonomia (8 Pilares)
+function renderAutonomy(){
+  const m=computeMetrics(),D=m.D;
+  const lvl=m.minCovered?'g':(m.days>=Math.ceil(D/2)?'y':'r');
+  let badge='',banner='';
+  if(!m.minCovered){
+    badge=`<span class="pill r">${m.days} / ${D} dias</span>`;
+    const ex=m.pillars[6].onlyPadel?' • Só tens calçado de padel em Lisboa (não conta).':'';
+    banner=`<div class="alert-box">⚠️ Gargalo${m.bottlenecks.length>1?'s':''}: ${esc(m.bottlenecks.join(', '))}${ex}</div>`;
+  }else if(m.allIdeal){
+    badge=`<span class="pill a">★ Autonomia Ideal (${D}d)</span>`;
+  }else{
+    badge=`<span class="pill g">✓ Mínimo ${D}d coberto</span> <span class="pill a">Falta p/ ideal: ${esc(m.idealGaps.join(', '))}</span>`;
+    banner=`<div class="alert-box ideal">✨ Falta p/ ideal: ${esc(m.idealGaps.join(', '))}</div>`;
+  }
+
+  const pHtml=m.pillars.map(p=>{
+    const bot=!m.minCovered&&p.min>0&&p.days===m.days;
+    const isStar=p.min>0&&p.u>=p.ideal&&(p.kind==='mi'||p.kind==='sh');
+    const isOk=p.min>0&&p.days>=D;
+    const cls='pbox'+(bot?' bad':(isStar?' star':(isOk?' ok':'')));
+    let tag='';
+    if(p.min===0)tag='<span class="pday">Ignorado</span>';
+    else if(p.kind==='mi'||p.kind==='sh'||p.kind==='pj'){
+      tag=isStar?'<span class="pday star">★ Ideal</span>':(isOk?`<span class="pday ok">✓ ${D}d</span>`:'<span class="pday bad">0d</span>');
+    }else tag=`<span class="pday ${isOk?'ok':(bot?'bad':'')}">${p.days}d</span>`;
+
+    let val='',sub='';
+    if(p.kind==='mi'){
+      const dec=p.a>0?` (${p.v}V + ${p.a}A)`:'';
+      val=`${p.u} · Mín ${p.min} / Ideal ${p.ideal}`;
+      sub=`Verde + Amarelo${dec}`;
+    }else if(p.kind==='sh'){
+      val=`${p.u} · Mín ${p.min} / Ideal ${p.ideal}`;
+      sub=p.onlyPadel?'<span class="psub bad">Só tens calçado de padel em Lisboa (não conta)</span>':`Uso diário${p.padel?` · +${p.padel} Padel`:''}`;
+    }else if(p.kind==='pj'){
+      val=`${p.u}/3 obrig.`;
+      sub=p.missing.length?`<span class="psub bad">Falta: ${esc(p.missing.join(', '))}</span>`:'3/3 a Verde em Lisboa';
+      if(p.optTxt)sub+=`<div class="psub">${esc(p.optTxt)}</div>`;
+    }else{
+      const dec=p.kind==='std'&&p.a>0?` <span style="font-size:.75rem;color:var(--tx2)">(${p.v}V + ${p.a}A)</span>`:'';
+      val=`${p.u} / ${p.min}${dec}`;
+      sub=p.kind==='bin'?'Só Verde (Limpo)':(p.sub||'Verde + Amarelo');
+    }
+
+    const maxB=Math.max(p.ideal,p.min,1);
+    const gW=Math.min(100,p.v/maxB*100),yW=Math.min(100-gW,p.a/maxB*100);
+    const mark=(p.kind==='mi'||p.kind==='sh')&&p.min>0&&p.ideal>p.min?`<div class="bar-mark" style="left:${(p.min/maxB*100).toFixed(1)}%" title="Mínimo ${p.min}"></div>`:'';
+    return `<div class="${cls}">
+      <div class="ptop"><span class="plbl">${esc(p.lbl)}</span>${tag}</div>
+      <div class="pval">${val}</div>
+      <div class="bar-wrap"><div class="bar-inner"><div class="bar-g" style="width:${gW.toFixed(1)}%"></div>${yW>0?`<div class="bar-y" style="width:${yW.toFixed(1)}%"></div>`:''}</div>${mark}</div>
+      <div class="psub">${sub}</div>
+    </div>`;
+  }).join('');
+
+  $('autonomy-box').innerHTML=`<div class="auto-card">
+    <div class="auto-main">
+      <div class="auto-box ${lvl}"><span class="auto-num">${m.days}/${D}</span><span class="auto-unit">dias</span></div>
+      <div>
+        <div style="font-weight:850;font-size:1.03rem">Autonomia em Lisboa: ${m.days} / ${D} dias</div>
+        <div class="auto-badges">${badge}</div>
+      </div>
+    </div>
+    ${banner}
+    <div class="pillars">${pHtml}</div>
+  </div>`;
+}
+
+// Render: Roupa Interior (Estritamente Binária Verde/Vermelho)
+function renderUW(){
+  const list=[{k:'boxers',t:'Boxers',g:state.metas.boxers,c:state.underwear.boxers},{k:'meias',t:'Meias (pares)',g:state.metas.meias,c:state.underwear.meias}];
+  $('uw-box').innerHTML=list.map(u=>{
+    const pct=u.g?Math.min(100,Math.round(u.c.verde/u.g*100)):100;
+    const col=u.c.verde===0&&u.g>0?'var(--r)':'var(--g)';
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
+        <div><div style="font-weight:800">${u.t}</div><div style="font-size:.78rem;color:var(--mut)">Total: ${u.c.verde+u.c.vermelho} · Meta: ${u.g}</div></div>
+        <button type="button" class="btn btn-s" data-action="uw-use" data-uw="${u.k}"${u.c.verde?'':' disabled'}>Usar 1 hoje</button>
+      </div>
+      <div class="bar-wrap" style="height:9px"><div class="bar-inner"><div style="height:100%;width:${pct}%;background:${col}"></div></div></div>
+      <div class="uw-grid">
+        <div class="uw-box g"><span style="font-size:.78rem;font-weight:750"><span class="dot dg"></span> Verde</span>
+          <div class="step"><button type="button" class="sbtn" data-action="uw-adj" data-uw="${u.k}" data-st="verde" data-d="-1"${u.c.verde?'':' disabled'}>−</button><span class="sval tg">${u.c.verde}</span><button type="button" class="sbtn" data-action="uw-adj" data-uw="${u.k}" data-st="verde" data-d="1">+</button></div>
+        </div>
+        <div class="uw-box r"><span style="font-size:.78rem;font-weight:750"><span class="dot dr"></span> Vermelho</span>
+          <div class="step"><button type="button" class="sbtn" data-action="uw-adj" data-uw="${u.k}" data-st="vermelho" data-d="-1"${u.c.vermelho?'':' disabled'}>−</button><span class="sval tr">${u.c.vermelho}</span><button type="button" class="sbtn" data-action="uw-adj" data-uw="${u.k}" data-st="vermelho" data-d="1">+</button></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Render: Pijama (Fixo, Binário Verde/Vermelho, Reserva sempre em Coimbra)
+function renderPijamaLisboa(){
+  $('lisboa-pijama').innerHTML=PIJ_DEFS.map(def=>{
+    const p=state.pijama.find(x=>x.id===def.id);
+    const opt=def.required?'':'<span class="pill a" style="margin-left:4px">Opcional</span>';
+    if(!p.inLisboa){
+      return `<article class="icard missing">
+        <div class="itop"><div class="iname">🌙 ${esc(def.name)} ${opt}</div><span class="pill r">Em falta em Lisboa</span></div>
+        <div style="font-size:.82rem;color:var(--tx2)">Reserva limpa pronta em Coimbra</div>
+        <div class="ifoot"><button type="button" class="btn btn-p" data-action="pij-bring" data-id="${def.id}">➡️ Trazer reserva p/ Lisboa</button></div>
+      </article>`;
+    }
+    const rHtml=p.status==='vermelho'?`<div class="rrow">${PIJ_REASONS.map(r=>`<button type="button" class="rchip${p.reasons.includes(r)?' on-vermelho':''}" data-action="pij-r" data-id="${def.id}" data-r="${esc(r)}">${esc(r)}</button>`).join('')}</div>`:'';
+    return `<article class="icard ${p.status}">
+      <div class="itop">
+        <div class="iname">🌙 ${esc(def.name)} ${opt}</div>
+        <div class="uses">
+          <span class="ucnt">${p.uses} ${p.uses===1?'uso':'usos'}</span>
+          <button type="button" class="ubtn" data-action="pij-u" data-id="${def.id}" data-d="1">+1</button>
+          ${p.uses?`<button type="button" class="ubtn" data-action="pij-u" data-id="${def.id}" data-d="0">0</button>`:''}
+        </div>
+      </div>
+      <div class="traf bin">
+        <button type="button" class="tbtn${p.status==='verde'?' on-verde':''}" data-action="pij-st" data-id="${def.id}" data-st="verde"><span class="dot dg"></span>Verde</button>
+        <button type="button" class="tbtn${p.status==='vermelho'?' on-vermelho':''}" data-action="pij-st" data-id="${def.id}" data-st="vermelho"><span class="dot dr"></span>Vermelho</button>
+      </div>
+      ${rHtml}
+      <div class="ifoot">
+        <div class="ifoot-g">
+          ${p.status==='vermelho'?`<button type="button" class="btn btn-p" data-action="pij-swap" data-id="${def.id}">🔄 Trocar c/ Coimbra</button>`:''}
+          <button type="button" class="btn btn-s" data-action="pij-casa" data-id="${def.id}">Levar p/ Coimbra</button>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function renderPijamaCasa(){
+  $('casa-pijama').innerHTML=PIJ_DEFS.map(def=>{
+    const p=state.pijama.find(x=>x.id===def.id);
+    const opt=def.required?'':'<span class="pill a" style="margin-left:4px">Opcional</span>';
+    let cls='verde',stBdg='',act='';
+    if(!p.inLisboa){
+      cls='vermelho';stBdg='<span class="pill r">Em falta em Lisboa</span>';
+      act=`<button type="button" class="btn btn-p" data-action="pij-bring" data-id="${def.id}">➡️ Trazer p/ Lisboa</button>`;
+    }else if(p.status==='vermelho'){
+      cls='vermelho';stBdg=`<span class="pill r">Vermelho em Lisboa${p.reasons.length?' ('+esc(p.reasons.join(', '))+')':''}</span>`;
+      act=`<button type="button" class="btn btn-p" data-action="pij-swap" data-id="${def.id}">🔄 Trocar c/ Lisboa</button>`;
+    }else{
+      stBdg='<span class="pill g">Verde em Lisboa</span>';
+    }
+    return `<article class="icard ${cls}">
+      <div class="iname">🌙 ${esc(def.name)} ${opt}</div>
+      <div class="rrow"><span class="pill g">Reserva limpa em Coimbra</span>${stBdg}</div>
+      ${act?`<div class="ifoot">${act}</div>`:''}
+    </article>`;
+  }).join('');
+}
+
+// Render: Peças Normais e Calçado
+function itemCardLisboa(it){
+  const rHtml=it.status!=='verde'?`<div class="rrow">${REASONS.map(r=>`<button type="button" class="rchip${it.reasons.includes(r)?' on-'+it.status:''}" data-action="tog-r" data-id="${esc(it.id)}" data-r="${esc(r)}">${esc(r)}</button>`).join('')}</div>`:'';
+  return `<article class="icard ${it.status}">
+    <div class="itop">
+      <div class="iname">${esc(it.name)}</div>
+      <div class="uses">
+        <span class="ucnt">${it.uses} ${it.uses===1?'uso':'usos'}</span>
+        <button type="button" class="ubtn" data-action="u-inc" data-id="${esc(it.id)}">+1</button>
+        ${it.uses?`<button type="button" class="ubtn" data-action="u-rst" data-id="${esc(it.id)}">0</button>`:''}
+      </div>
+    </div>
+    <div class="traf">
+      ${['verde','amarelo','vermelho'].map(st=>`<button type="button" class="tbtn${it.status===st?' on-'+st:''}" data-action="set-st" data-id="${esc(it.id)}" data-st="${st}"><span class="dot d${st[0]}"></span>${ST_LBL[st]}</button>`).join('')}
+    </div>
+    ${rHtml}
+    ${it.note?`<div class="inote">${esc(it.note)}</div>`:''}
+    <div class="ifoot">
+      <button type="button" class="btn btn-s" data-action="mv-casa" data-id="${esc(it.id)}">→ Coimbra</button>
+      <div class="ifoot-g">
+        <button type="button" class="btn btn-g" data-action="edit-item" data-id="${esc(it.id)}">Editar</button>
+        <button type="button" class="btn btn-g tr" data-action="del-item" data-id="${esc(it.id)}">Apagar</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function itemCardCasa(it){
+  const ready=it.status==='verde'&&!it.reasons.length;
+  const bdgs=it.reasons.length
+    ?it.reasons.map(r=>`<span class="pill ${it.status==='amarelo'?'y':'r'}">${esc(r)}</span>`).join('')
+    :`<span class="pill ${ready?'g':(it.status==='amarelo'?'y':'r')}">${ready?'Pronta (Verde)':ST_LBL[it.status]}</span>`;
+  return `<article class="icard ${it.status}">
+    <div class="iname">${esc(it.name)}</div>
+    <div class="rrow">${bdgs}</div>
+    ${it.note?`<div class="inote">${esc(it.note)}</div>`:''}
+    <div class="ifoot">
+      <div class="ifoot-g">
+        ${ready?'':`<button type="button" class="btn btn-s" data-action="mk-green" data-id="${esc(it.id)}">Marcar Verde</button>`}
+        <button type="button" class="btn btn-p" data-action="mv-lisboa" data-id="${esc(it.id)}">Levar p/ Lisboa</button>
+      </div>
+      <div class="ifoot-g">
+        <button type="button" class="btn btn-g" data-action="edit-item" data-id="${esc(it.id)}">Editar</button>
+        <button type="button" class="btn btn-g tr" data-action="del-item" data-id="${esc(it.id)}">Apagar</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function shoeCard(s){
+  const inL=s.location==='lisboa';
+  return `<article class="scard${s.isPadel?' padel':''}">
+    <div class="itop">
+      <div class="iname">${s.isPadel?'🎾':'👟'} ${esc(s.name)}</div>
+      <span class="pill ${s.isPadel?'p':'g'}">${s.isPadel?'🎾 Padel · não conta p/ autonomia':'👟 Uso diário'}</span>
+    </div>
+    ${s.note?`<div class="inote">${esc(s.note)}</div>`:''}
+    <div class="ifoot">
+      <div class="ifoot-g">
+        <button type="button" class="btn ${inL?'btn-s':'btn-p'}" data-action="mv-shoe" data-id="${esc(s.id)}" data-to="${inL?'casa':'lisboa'}">${inL?'→ Coimbra':'Levar p/ Lisboa'}</button>
+        <button type="button" class="btn ${s.isPadel?'btn-s':'btn-pad'}" data-action="tog-padel" data-id="${esc(s.id)}">${s.isPadel?'Uso diário':'🎾 Padel'}</button>
+      </div>
+      <div class="ifoot-g">
+        <button type="button" class="btn btn-g" data-action="edit-shoe" data-id="${esc(s.id)}">Editar</button>
+        <button type="button" class="btn btn-g tr" data-action="del-shoe" data-id="${esc(s.id)}">Apagar</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function renderLisboaCats(){
+  const q=ui.qL.trim().toLowerCase(),li=atLoc(state.items,'lisboa'),ord={vermelho:0,amarelo:1,verde:2};
+  document.querySelectorAll('#st-pills .fpill').forEach(b=>b.classList.toggle('active',b.dataset.st===ui.stL));
+  const cats=ui.catL==='all'?CATS:[ui.catL];
+  let matched=0;
+  const html=cats.map(cat=>{
+    const all=li.filter(i=>i.category===cat);
+    const fil=all.filter(i=>{
+      if(ui.stL!=='all'&&i.status!==ui.stL)return false;
+      if(q&&!(i.name+' '+i.note+' '+i.reasons.join(' ')).toLowerCase().includes(q))return false;
+      return true;
+    }).sort((a,b)=>(ord[a.status]-ord[b.status])||a.name.localeCompare(b.name,'pt'));
+    matched+=fil.length;
+    if((q||ui.stL!=='all')&&ui.catL==='all'&&!fil.length)return '';
+    const c=cntSt(all);
+    return `<div class="cat-blk">
+      <div class="cat-hd">
+        <div class="cat-l"><span>${CICO[cat]}</span><strong>${esc(cat)}</strong><span class="pill">${all.length}</span>
+          <span class="pill g">${c.v}V</span><span class="pill y">${c.a}A</span><span class="pill r">${c.r}R</span>
+        </div>
+        <button type="button" class="btn btn-g" data-action="open-add-item" data-loc="lisboa" data-cat="${esc(cat)}">+ Adicionar</button>
+      </div>
+      ${fil.length?`<div class="g2">${fil.map(itemCardLisboa).join('')}</div>`:'<p style="font-size:.84rem;color:var(--mut)">Sem peças nesta categoria em Lisboa.</p>'}
+    </div>`;
+  }).join('');
+  $('lisboa-cats').innerHTML=!matched&&(q||ui.stL!=='all'||ui.catL!=='all')
+    ?'<div class="empty">Nenhuma peça corresponde aos filtros.<br><button type="button" class="btn btn-s" data-action="rst-flt" style="margin-top:8px">Limpar filtros</button></div>'
+    :`<div class="cat-stack">${html}</div>`;
+}
+
+function renderShoes(loc,boxId,cntId){
+  const arr=atLoc(state.shoes,loc).sort((a,b)=>(a.isPadel-b.isPadel)||a.name.localeCompare(b.name,'pt'));
+  $(cntId).textContent=String(arr.length);
+  $(boxId).innerHTML=arr.length?`<div class="g2">${arr.map(shoeCard).join('')}</div>`:`<div class="empty">Sem calçado registado ${loc==='lisboa'?'em Lisboa':'em Casa'}.</div>`;
+}
+
+// Render: Mala (Lisboa <-> Coimbra)
+// Regra 1: Em Lisboa -> Coimbra, Amarelas, Verdes e Pijama Verde são opcionais (desmarcados por defeito). Roupa interior só Vermelho.
+// Regra 2: Em Coimbra -> Lisboa, NENHUMA peça de pijama é pré-selecionada automaticamente.
+function syncMala(){
+  const li=atLoc(state.items,'lisboa'),ci=atLoc(state.items,'casa');
+  const lIds=new Set(li.map(i=>i.id)),cIds=new Set(ci.map(i=>i.id));
+  const lsIds=new Set(atLoc(state.shoes,'lisboa').map(s=>s.id)),csIds=new Set(atLoc(state.shoes,'casa').map(s=>s.id));
+  for(const id of [...ui.mRet])if(!lIds.has(id))ui.mRet.delete(id);
+  for(const id of [...ui.mRetSync])if(!lIds.has(id))ui.mRetSync.delete(id);
+  for(const id of [...ui.mGo])if(!cIds.has(id))ui.mGo.delete(id);
+  for(const id of [...ui.mRetSh])if(!lsIds.has(id))ui.mRetSh.delete(id);
+  for(const id of [...ui.mGoSh])if(!csIds.has(id))ui.mGoSh.delete(id);
+
+  // Lisboa -> Coimbra: pré-seleciona automaticamente peças a Vermelho; mantém seleções manuais de Amarelas/Verdes
+  li.forEach(i=>{
+    if(i.status==='vermelho'){if(!ui.mRetSync.has(i.id)){ui.mRet.add(i.id);ui.mRetSync.add(i.id);}}
+    else ui.mRetSync.delete(i.id);
+  });
+
+  for(const d of PIJ_DEFS){
+    const p=state.pijama.find(x=>x.id===d.id);
+    if(!p.inLisboa){ui.mRetPij.delete(d.id);ui.mRetPijSync.delete(d.id);}
+    else if(p.status==='vermelho'){if(!ui.mRetPijSync.has(d.id)){ui.mRetPij.add(d.id);ui.mRetPijSync.add(d.id);}}
+    else ui.mRetPijSync.delete(d.id); // Se Verde em Lisboa, preserva eventual seleção manual em ui.mRetPij
+
+    // Coimbra -> Lisboa: nunca pré-selecionar pijama; remove apenas se já estiver Verde em Lisboa
+    if(p.inLisboa&&p.status==='verde')ui.mGoPij.delete(d.id);
+  }
+
+  const mb=state.underwear.boxers.vermelho,mm=state.underwear.meias.vermelho;
+  ui.mRetB=ui.mRetB===null?mb:Math.min(mb,Math.max(0,ui.mRetB));
+  ui.mRetM=ui.mRetM===null?mm:Math.min(mm,Math.max(0,ui.mRetM));
+  const m=computeMetrics();
+  if(ui.mGoB===null)ui.mGoB=m.minDef.boxers;
+  if(ui.mGoM===null)ui.mGoM=m.minDef.meias;
+}
+
+function malaList(arr,set,act,redCls,emptyTxt){
+  if(!arr.length)return `<p style="font-size:.84rem;color:var(--mut);margin-bottom:8px">${emptyTxt}</p>`;
+  return CATS.map(cat=>{
+    const g=arr.filter(i=>i.category===cat).sort((a,b)=>a.name.localeCompare(b.name,'pt'));
+    if(!g.length)return '';
+    return `<div style="font-size:.82rem;font-weight:800;margin:8px 0 5px">${CICO[cat]} ${esc(cat)} (${g.length})</div>`+g.map(i=>
+      `<label class="chk${redCls?' red':''}"><input type="checkbox" data-action="${act}" data-id="${esc(i.id)}"${set.has(i.id)?' checked':''}>
+        <div style="flex:1"><div style="font-weight:750;font-size:.9rem">${esc(i.name)}</div>
+        <div style="font-size:.78rem;color:var(--tx2)">${i.reasons.length?esc(i.reasons.join(', ')):ST_LBL[i.status]}${i.note?` · "${esc(i.note)}"`:''}</div></div>
+        <span class="dot d${i.status[0]}"></span></label>`).join('');
+  }).join('');
+}
+
+function malaShoes(arr,set,act,emptyTxt){
+  if(!arr.length)return `<p style="font-size:.84rem;color:var(--mut);margin-bottom:8px">${emptyTxt}</p>`;
+  return arr.map(s=>`<label class="chk"><input type="checkbox" data-action="${act}" data-id="${esc(s.id)}"${set.has(s.id)?' checked':''}>
+    <div style="flex:1"><div style="font-weight:750;font-size:.9rem">${s.isPadel?'🎾':'👟'} ${esc(s.name)}</div>
+    <div style="font-size:.77rem;color:var(--tx2)">${s.isPadel?'Padel (não conta)':'Uso diário'}${s.note?` · ${esc(s.note)}`:''}</div></div></label>`).join('');
+}
+
+function renderMala(){
+  syncMala();
+  const m=computeMetrics(),li=atLoc(state.items,'lisboa'),ci=atLoc(state.items,'casa');
+  const red=li.filter(i=>i.status==='vermelho'),yel=li.filter(i=>i.status==='amarelo'),grn=li.filter(i=>i.status==='verde');
+  const mb=state.underwear.boxers.vermelho,mm=state.underwear.meias.vermelho;
+  const pijRetRed=PIJ_DEFS.filter(d=>{const p=state.pijama.find(x=>x.id===d.id);return p.inLisboa&&p.status==='vermelho';});
+  const pijRetGrn=PIJ_DEFS.filter(d=>{const p=state.pijama.find(x=>x.id===d.id);return p.inLisboa&&p.status==='verde';});
+  const pijGo=PIJ_DEFS.filter(d=>{const p=state.pijama.find(x=>x.id===d.id);return !p.inLisboa||p.status==='vermelho';});
+  const noPijInLisboa=state.pijama.every(p=>!p.inLisboa);
+
+  const minChips=[];
+  if(m.minDef.boxers)minChips.push(`+${m.minDef.boxers} Boxers`);
+  if(m.minDef.meias)minChips.push(`+${m.minDef.meias} Meias`);
+  if(m.minDef.tops)minChips.push(`+${m.minDef.tops} T-shirt/Camisas`);
+  if(m.minDef.camisolas)minChips.push(`+${m.minDef.camisolas} Camisola`);
+  if(m.minDef.casacos)minChips.push(`+${m.minDef.casacos} Casaco`);
+  if(m.minDef.calcas)minChips.push(`+${m.minDef.calcas} Calças`);
+  if(m.minDef.sapatilhas)minChips.push(`+${m.minDef.sapatilhas} Sapatilha útil`);
+  if(m.minDef.pijama.length)minChips.push(`Pijama: ${m.minDef.pijama.join(', ')}`);
+
+  $('mala-box').innerHTML=`
+  <div class="card" style="margin-bottom:14px">
+    <span class="pill r" style="margin-bottom:6px">Lisboa → Coimbra</span>
+    <h2 class="sec-t">Lisboa → Coimbra</h2>
+
+    <div class="subh">Roupa Interior Suja (só Vermelho)</div>
+    ${(mb||mm)?`<div class="g2" style="margin-bottom:10px">
+      <div class="uw-row"><div><strong>Boxers Vermelhos</strong><div style="font-size:.76rem;color:var(--mut)">Em Lisboa: ${mb}</div></div>
+        <div class="step"><button type="button" class="sbtn" data-action="mr-uw" data-uw="boxers" data-d="-1"${ui.mRetB?'':' disabled'}>−</button><input type="number" class="num-in" min="0" max="${mb}" value="${ui.mRetB}" data-action="mr-uw-inp" data-uw="boxers" aria-label="Boxers vermelhos"><button type="button" class="sbtn" data-action="mr-uw" data-uw="boxers" data-d="1"${ui.mRetB<mb?'':' disabled'}>+</button></div></div>
+      <div class="uw-row"><div><strong>Meias Vermelhas</strong><div style="font-size:.76rem;color:var(--mut)">Em Lisboa: ${mm}</div></div>
+        <div class="step"><button type="button" class="sbtn" data-action="mr-uw" data-uw="meias" data-d="-1"${ui.mRetM?'':' disabled'}>−</button><input type="number" class="num-in" min="0" max="${mm}" value="${ui.mRetM}" data-action="mr-uw-inp" data-uw="meias" aria-label="Meias vermelhas"><button type="button" class="sbtn" data-action="mr-uw" data-uw="meias" data-d="1"${ui.mRetM<mm?'':' disabled'}>+</button></div></div>
+    </div>`:'<p style="font-size:.84rem;color:var(--mut)">Sem roupa interior a Vermelho em Lisboa.</p>'}
+
+    <div class="subh">🌙 Pijama em Lisboa a Vermelho</div>
+    ${pijRetRed.length?pijRetRed.map(d=>{
+      const p=state.pijama.find(x=>x.id===d.id);
+      return `<label class="chk red"><input type="checkbox" data-action="mr-pij" data-id="${d.id}"${ui.mRetPij.has(d.id)?' checked':''}>
+        <div style="flex:1"><div style="font-weight:750;font-size:.9rem">${esc(d.name)}${d.required?'':' <span class="pill a">Opcional</span>'}</div>
+        <div style="font-size:.78rem;color:var(--tx2)">Vai para Coimbra · ${p.reasons.length?esc(p.reasons.join(', ')):'Para lavar'}</div></div><span class="dot dr"></span></label>`;
+    }).join(''):'<p style="font-size:.84rem;color:var(--mut)">Nenhuma peça de pijama a Vermelho em Lisboa.</p>'}
+
+    ${pijRetGrn.length?`<details class="opt-det grn"><summary><span>🌙 Adicionar Pijama Verde em Lisboa (${pijRetGrn.length})</span><span>▼</span></summary><div style="padding:6px 0 4px">${pijRetGrn.map(d=>{
+      const p=state.pijama.find(x=>x.id===d.id);
+      return `<label class="chk"><input type="checkbox" data-action="mr-pij" data-id="${d.id}"${ui.mRetPij.has(d.id)?' checked':''}>
+        <div style="flex:1"><div style="font-weight:750;font-size:.9rem">${esc(d.name)}${d.required?'':' <span class="pill a">Opcional</span>'}</div>
+        <div style="font-size:.78rem;color:var(--tx2)">Verde em Lisboa · ${p.uses} ${p.uses===1?'uso':'usos'}</div></div><span class="dot dg"></span></label>`;
+    }).join('')}</div></details>`:''}
+
+    <div class="subh">Peças de Roupa a Vermelho</div>
+    ${malaList(red,ui.mRet,'mr-it',true,'Sem peças normais a Vermelho em Lisboa.')}
+
+    ${yel.length?`<details class="opt-det yel"><summary><span>Adicionar peças Amarelas (${yel.length}) · opcional</span><span>▼</span></summary><div style="padding:6px 0 4px">${malaList(yel,ui.mRet,'mr-it',false,'')}</div></details>`:''}
+    ${grn.length?`<details class="opt-det grn"><summary><span>Adicionar peças Verdes (${grn.length}) · ex: roupa da viagem</span><span>▼</span></summary><div style="padding:6px 0 4px">${malaList(grn,ui.mRet,'mr-it',false,'')}</div></details>`:''}
+
+    <div class="subh">Calçado em Lisboa (opcional)</div>
+    ${malaShoes(atLoc(state.shoes,'lisboa'),ui.mRetSh,'mr-sh','Sem calçado em Lisboa.')}
+    <button type="button" class="btn btn-d btn-full" style="margin-top:8px" data-action="cfm-ret">Confirmar Mala Lisboa → Coimbra</button>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+      <div><span class="pill g" style="margin-bottom:6px">Coimbra → Lisboa</span><h2 class="sec-t">Coimbra → Lisboa</h2></div>
+      <button type="button" class="btn btn-s" data-action="fill-def">Preencher défice interior</button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0">
+      ${minChips.length?minChips.map(c=>`<span class="pill r">Mínimo: ${esc(c)}</span>`).join(''):`<span class="pill g">✓ Mínimo ${m.D}d coberto</span>`}
+      ${m.idealGaps.length?`<span class="pill a">Sugestão Ideal: ${esc(m.idealGaps.join(', '))}</span>`:'<span class="pill a">★ Ideal atingido</span>'}
+    </div>
+
+    <div class="subh">Roupa Interior Limpa (Verde)</div>
+    <div class="g2" style="margin-bottom:10px">
+      <div class="uw-row"><div><strong>Boxers Verdes</strong><div style="font-size:.76rem;color:var(--mut)">Lisboa: ${state.underwear.boxers.verde}/${state.metas.boxers}</div></div>
+        <div class="step"><button type="button" class="sbtn" data-action="mg-uw" data-uw="boxers" data-d="-1"${ui.mGoB?'':' disabled'}>−</button><input type="number" class="num-in" min="0" max="30" value="${ui.mGoB}" data-action="mg-uw-inp" data-uw="boxers" aria-label="Boxers limpos"><button type="button" class="sbtn" data-action="mg-uw" data-uw="boxers" data-d="1">+</button></div></div>
+      <div class="uw-row"><div><strong>Meias Verdes</strong><div style="font-size:.76rem;color:var(--mut)">Lisboa: ${state.underwear.meias.verde}/${state.metas.meias}</div></div>
+        <div class="step"><button type="button" class="sbtn" data-action="mg-uw" data-uw="meias" data-d="-1"${ui.mGoM?'':' disabled'}>−</button><input type="number" class="num-in" min="0" max="30" value="${ui.mGoM}" data-action="mg-uw-inp" data-uw="meias" aria-label="Meias limpas"><button type="button" class="sbtn" data-action="mg-uw" data-uw="meias" data-d="1">+</button></div></div>
+    </div>
+
+    <div class="subh">🌙 Pijama (Reserva de Coimbra → Lisboa · seleção manual)</div>
+    ${pijGo.length?`
+      ${noPijInLisboa?'<div class="alert-box" style="margin-bottom:8px">🌙 Não tens nenhum pijama em Lisboa — seleciona abaixo o que queres levar de Coimbra.</div>':''}
+      ${pijGo.map(d=>{
+        const p=state.pijama.find(x=>x.id===d.id);
+        const bdg=!p.inLisboa?`<span class="pill ${d.required?'r':'a'}">Em falta em Lisboa</span>`:'<span class="pill y">Trocar · Vermelho em Lisboa</span>';
+        return `<label class="chk"><input type="checkbox" data-action="mg-pij" data-id="${d.id}"${ui.mGoPij.has(d.id)?' checked':''}>
+          <div style="flex:1"><div style="font-weight:750;font-size:.9rem">${esc(d.name)} ${d.required?'':'<span class="pill">Opcional</span>'}</div>
+          <div style="margin-top:3px">${bdg}</div></div><span class="dot dg"></span></label>`;
+      }).join('')}
+    `:'<p class="pill g" style="margin-bottom:8px">Pijama completo em Lisboa ✓</p>'}
+
+    <div class="subh">Peças de Roupa Em Casa (chegam a Lisboa a Verde)</div>
+    ${malaList(ci,ui.mGo,'mg-it',false,'Sem peças normais em Coimbra.')}
+    <div class="subh">Calçado Em Casa</div>
+    ${malaShoes(atLoc(state.shoes,'casa'),ui.mGoSh,'mg-sh','Sem calçado em Coimbra.')}
+    <button type="button" class="btn btn-p btn-full" style="margin-top:8px" data-action="cfm-go">Confirmar Mala Coimbra → Lisboa</button>
+  </div>`;
+}
+
+// Render: Em Casa (Coimbra)
+function renderCasa(){
+  renderPijamaCasa();
+  const ci=atLoc(state.items,'casa');
+  $('casa-cats').innerHTML=`<div class="cat-stack">${CATS.map(cat=>{
+    const g=ci.filter(i=>i.category===cat).sort((a,b)=>a.name.localeCompare(b.name,'pt'));
+    return `<div class="cat-blk">
+      <div class="cat-hd"><div class="cat-l"><span>${CICO[cat]}</span><strong>${esc(cat)}</strong><span class="pill">${g.length}</span></div>
+        <button type="button" class="btn btn-g" data-action="open-add-item" data-loc="casa" data-cat="${esc(cat)}">+ Adicionar</button></div>
+      ${g.length?`<div class="g2">${g.map(itemCardCasa).join('')}</div>`:'<p style="font-size:.84rem;color:var(--mut)">Sem peças nesta categoria em Casa.</p>'}
+    </div>`;
+  }).join('')}</div>`;
+  renderShoes('casa','casa-shoes','cnt-sc');
+}
+
+// Render: Sync & Metas + Resumo Markdown
+function buildMd(){
+  const m=computeMetrics(),ico={verde:'🟢',amarelo:'🟡',vermelho:'🔴'};
+  const fmtCat=(arr,isL)=>CATS.map(c=>{
+    const g=arr.filter(i=>i.category===c);
+    const b=g.length?g.map(i=>isL?`- ${ico[i.status]} ${i.name} (${[...i.reasons,i.uses+' usos',i.note?`"${i.note}"`:''].filter(Boolean).join(' | ')})`:`- ${ico[i.status]} ${i.name} — ${i.reasons.length?i.reasons.join(', '):ST_LBL[i.status]}${i.note?` ("${i.note}")`:''}`).join('\n'):'- (nenhuma)';
+    return `### ${c} (${g.length})\n${b}`;
+  }).join('\n\n');
+  const fmtSh=arr=>arr.length?arr.map(s=>`- ${s.name} [${s.isPadel?'Padel - não conta':'Uso diário'}]${s.note?` ("${s.note}")`:''}`).join('\n'):'- (nenhum)';
+  const pijLines=PIJ_DEFS.map(d=>{
+    const p=state.pijama.find(x=>x.id===d.id);
+    const lTxt=p.inLisboa?`${ico[p.status]} Lisboa (${ST_LBL[p.status]}${p.reasons.length?': '+p.reasons.join(', '):''}, ${p.uses} usos)`:'⚪ Em falta em Lisboa (reserva limpa pronta em Coimbra)';
+    return `- **${d.name}**${d.required?'':' [Opcional]'}: ${lTxt}`;
+  }).join('\n');
+  const stLine=!m.minCovered?`${m.days}/${m.D} dias (Gargalos: ${m.bottlenecks.join(', ')})`:(m.allIdeal?`★ Autonomia Ideal (${m.D}d)`:`✓ Mínimo ${m.D}d coberto | Falta p/ ideal: ${m.idealGaps.join(', ')}`);
+  const pLines=m.pillars.map(p=>{
+    if(p.kind==='mi')return `- **${p.lbl}:** ${p.u} (Mín ${p.min} / Ideal ${p.ideal}; ${p.v}V + ${p.a}A)`;
+    if(p.kind==='sh')return `- **${p.lbl}:** ${p.u} úteis (Mín ${p.min} / Ideal ${p.ideal}${p.padel?`; +${p.padel} Padel`:''})`;
+    if(p.kind==='pj')return `- **Pijama:** ${p.u}/3 obrig. a Verde em Lisboa${p.missing.length?` (Falta: ${p.missing.join(', ')})`:' ✓'} | ${p.optTxt}`;
+    return `- **${p.lbl}:** ${p.u}/${p.min}${p.kind==='std'&&p.a>0?` (${p.v}V + ${p.a}A)`:''} → ${p.days}d`;
+  }).join('\n');
+  return [
+    `# Guarda-Roupa Lisboa (${nowStr()})`,
+    `**Autonomia:** ${stLine}`,
+    `\n## 8 Pilares\n${pLines}`,
+    `\n## Roupa Interior em Lisboa (Binário)\n- Boxers: ${state.underwear.boxers.verde}V / ${state.underwear.boxers.vermelho}R (meta ${state.metas.boxers})\n- Meias: ${state.underwear.meias.verde}V / ${state.underwear.meias.vermelho}R (meta ${state.metas.meias})`,
+    `\n## Pijama (Binário · Reserva sempre em Coimbra)\n${pijLines}`,
+    `\n## Lisboa — Peças (${atLoc(state.items,'lisboa').length})\n${fmtCat(atLoc(state.items,'lisboa'),true)}`,
+    `\n## Lisboa — Calçado (${atLoc(state.shoes,'lisboa').length})\n${fmtSh(atLoc(state.shoes,'lisboa'))}`,
+    `\n## Em Casa (Coimbra) — Peças (${atLoc(state.items,'casa').length})\n${fmtCat(atLoc(state.items,'casa'),false)}`,
+    `\n## Em Casa (Coimbra) — Calçado (${atLoc(state.shoes,'casa').length})\n${fmtSh(atLoc(state.shoes,'casa'))}`
+  ].join('\n');
+}
+
+function renderSync(){
+  const m=state.metas;
+  const fields=[
+    ['days','Dias (Seg–Qui)',1,7],['boxers','Boxers (V)',0,30],['meias','Meias (V)',0,30],['tops','T-shirt/Camisas',0,30],
+    ['camisolasMin','Camisolas Mín',0,15],['camisolasIdeal','Camisolas Ideal',0,20],['casacosMin','Casacos Mín',0,10],['casacosIdeal','Casacos Ideal',0,15],
+    ['calcas','Calças/Calções',0,15],['sapatilhasMin','Sapatilhas Mín',0,10],['sapatilhasIdeal','Sapatilhas Ideal',0,10]
+  ];
+  $('sync-box').innerHTML=`
+  <div class="card" style="margin-bottom:12px">
+    <h2 class="sec-t">Metas Semanais (Mínimo vs Ideal)</h2>
+    <p class="sec-s" style="margin-bottom:10px">Padrão 4 dias (Seg–Qui). Colocar 0 ignora o mínimo desse pilar.</p>
+    <form id="f-metas" data-action="sub-metas">
+      <div class="g-goals">${fields.map(([k,l,mn,mx])=>`<div class="gbox">
+        <label class="fl" for="mt-${k}" style="margin:0">${l}</label>
+        <input type="number" id="mt-${k}" name="${k}" class="num-in" min="${mn}" max="${mx}" value="${m[k]}">
+      </div>`).join('')}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+        <button type="submit" class="btn btn-p">Guardar Metas</button>
+        <button type="button" class="btn btn-s" data-action="rst-metas">Repor padrão 4 dias (Seg–Qui)</button>
+      </div>
+    </form>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <h2 class="sec-t">Resumo Semanal Markdown</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+      <button type="button" class="btn btn-p" data-action="copy-md">Copiar Resumo Markdown</button>
+      <button type="button" class="btn btn-s" data-action="tog-md">${ui.prevMd?'Ocultar':'Pré-visualizar'}</button>
+    </div>
+    ${ui.prevMd?`<textarea class="code-a" readonly style="margin-top:10px">${esc(buildMd())}</textarea>`:''}
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <h2 class="sec-t">Backup JSON &amp; Dados</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+      <button type="button" class="btn btn-s" data-action="copy-json">Copiar JSON</button>
+      <button type="button" class="btn btn-s" data-action="dl-json">Descarregar .json</button>
+      <button type="button" class="btn btn-a" data-action="open-imp">Importar JSON</button>
+      <button type="button" class="btn btn-s" data-action="req-demo">Carregar Exemplos</button>
+      <button type="button" class="btn btn-ds" data-action="req-clear">Limpar Tudo</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2 class="sec-t">Histórico (últimas 15 ações)</h2>
+    ${state.history.length?state.history.map(h=>`<div class="hitem"><span>${esc(h.text)}</span><span style="font-size:.74rem;color:var(--mut);white-space:nowrap">${esc(h.time)}</span></div>`).join(''):'<p style="font-size:.84rem;color:var(--mut);margin-top:6px">Sem ações.</p>'}
+  </div>`;
+}
+
+// Render global
+function render(){
+  const lCnt=atLoc(state.items,'lisboa').length+atLoc(state.shoes,'lisboa').length+state.pijama.filter(p=>p.inLisboa).length;
+  const cCnt=atLoc(state.items,'casa').length+atLoc(state.shoes,'casa').length+4;
+  const alerts=atLoc(state.items,'lisboa').filter(i=>i.status==='vermelho').length
+    +state.pijama.filter(p=>p.inLisboa&&p.status==='vermelho').length
+    +state.pijama.filter(p=>p.required&&!p.inLisboa).length
+    +(state.underwear.boxers.vermelho?1:0)+(state.underwear.meias.vermelho?1:0);
+  $('bd-l').textContent=String(lCnt);$('bd-c').textContent=String(cCnt);
+  ['bd-m','bm-m'].forEach(id=>{$(id).textContent=String(alerts);$(id).classList.toggle('hidden',!alerts);});
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='view-'+ui.tab));
+  document.querySelectorAll('[data-action="switch-tab"]').forEach(b=>b.classList.toggle('active',b.dataset.tab===ui.tab));
+  $('mem-banner').classList.toggle('hidden',!SafeStorage.isTemp());
+
+  if(ui.tab==='lisboa'){renderAutonomy();renderUW();renderPijamaLisboa();renderLisboaCats();renderShoes('lisboa','lisboa-shoes','cnt-sl');}
+  else if(ui.tab==='mala')renderMala();
+  else if(ui.tab==='casa')renderCasa();
+  else renderSync();
+}
+
+// Helpers dos Modais
+function renderModalReasons(){
+  document.querySelectorAll('#fi-traf [data-action="fi-st"]').forEach(b=>b.className='tbtn'+(b.dataset.st===ui.fiSt?' on-'+ui.fiSt:''));
+  const g=$('fi-rgrp');
+  if(ui.fiSt==='verde'){g.classList.add('hidden');return;}
+  g.classList.remove('hidden');
+  $('fi-reasons').innerHTML=REASONS.map(r=>`<button type="button" class="rchip${ui.fiR.includes(r)?' on-'+ui.fiSt:''}" data-action="fi-r" data-r="${esc(r)}">${esc(r)}</button>`).join('');
+}
+function openItemModal(it,loc,cat){
+  $('mi-tit').textContent=it?'Editar peça':'Adicionar peça';
+  $('fi-id').value=it?it.id:'';$('fi-name').value=it?it.name:'';
+  const sel=$('fi-cat');sel.innerHTML=CATS.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  sel.value=it?it.category:(CATS.includes(cat)?cat:'Camisas');
+  $('fi-loc').value=it?it.location:(loc==='casa'?'casa':'lisboa');
+  $('fi-note').value=it?it.note:'';
+  ui.fiSt=it?it.status:'verde';ui.fiR=it?[...it.reasons]:[];
+  renderModalReasons();openModal('m-item');
+}
+function openShoeModal(sh,loc){
+  ui.shEdit=Boolean(sh);ui.shTouched=Boolean(sh);
+  $('ms-tit').textContent=sh?'Editar calçado':'Adicionar calçado';
+  $('fs-id').value=sh?sh.id:'';$('fs-name').value=sh?sh.name:'';
+  $('fs-loc').value=sh?sh.location:(loc==='casa'?'casa':'lisboa');
+  $('fs-padel').checked=Boolean(sh?.isPadel);$('fs-note').value=sh?sh.note:'';
+  openModal('m-shoe');
+}
+
+// Delegação total de eventos (zero handlers inline)
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-action]');if(!el)return;
+  const a=el.dataset.action;
+  if(a==='bd-close'){if(e.target===el)closeModal(el.dataset.modal);return;}
+  if(el.tagName==='INPUT'||el.tagName==='SELECT'||el.tagName==='FORM'||el.tagName==='TEXTAREA')return;
+
+  if(a==='switch-tab'){ui.tab=el.dataset.tab;render();}
+  else if(a==='close-modal'){closeModal(el.dataset.modal);}
+  else if(a==='cfm-ok'){const f=ui.cfmFn;closeModal('m-cfm');if(f)f();}
+  else if(a==='sel-cpy'){$('mcp-txt').focus();$('mcp-txt').select();}
+  else if(a==='uw-adj'){
+    const k=el.dataset.uw,st=el.dataset.st,d=parseInt(el.dataset.d,10);
+    state.underwear[k][st]=Math.max(0,state.underwear[k][st]+d);
+    if(st==='vermelho'){if(k==='boxers')ui.mRetB=state.underwear.boxers.vermelho;else ui.mRetM=state.underwear.meias.vermelho;}
+    ui.mGoB=ui.mGoM=null;save();render();
+  }else if(a==='uw-use'){
+    const k=el.dataset.uw,u=state.underwear[k];if(u.verde<=0)return;
+    u.verde--;u.vermelho++;if(k==='boxers')ui.mRetB=u.vermelho;else ui.mRetM=u.vermelho;
+    ui.mGoB=ui.mGoM=null;log(`Usado 1 ${k==='boxers'?'boxer':'par de meias'} (Verde→Vermelho).`);save();render();toast(`${k==='boxers'?'Boxers':'Meias'}: -1V, +1R`);
+  }else if(a==='pij-st'){
+    const p=state.pijama.find(x=>x.id===el.dataset.id),st=normBin(el.dataset.st);if(!p||p.status===st)return;
+    p.status=st;if(st==='verde'){p.reasons=[];ui.mRetPij.delete(p.id);ui.mRetPijSync.delete(p.id);ui.mGoPij.delete(p.id);}
+    else{ui.mRetPij.add(p.id);ui.mRetPijSync.add(p.id);}
+    log(`Pijama "${p.name}" → ${ST_LBL[st]}.`);save();render();
+  }else if(a==='pij-r'){
+    const p=state.pijama.find(x=>x.id===el.dataset.id);if(!p)return;
+    const i=p.reasons.indexOf(el.dataset.r);if(i>=0)p.reasons.splice(i,1);else p.reasons.push(el.dataset.r);
+    save();renderPijamaLisboa();
+  }else if(a==='pij-u'){
+    const p=state.pijama.find(x=>x.id===el.dataset.id);if(!p)return;
+    p.uses=el.dataset.d==='1'?p.uses+1:0;save();renderPijamaLisboa();
+  }else if(a==='pij-casa'){
+    const p=state.pijama.find(x=>x.id===el.dataset.id);if(!p)return;
+    p.inLisboa=false;p.status='verde';p.uses=0;p.reasons=[];ui.mRetPij.delete(p.id);ui.mRetPijSync.delete(p.id);
+    log(`Pijama "${p.name}" levado p/ Coimbra.`);save();render();toast('Levado p/ Coimbra (reserva pronta em Casa).');
+  }else if(a==='pij-swap'||a==='pij-bring'){
+    const p=state.pijama.find(x=>x.id===el.dataset.id);if(!p)return;
+    p.inLisboa=true;p.status='verde';p.uses=0;p.reasons=[];ui.mRetPij.delete(p.id);ui.mRetPijSync.delete(p.id);ui.mGoPij.delete(p.id);
+    log(a==='pij-bring'?`Reserva de "${p.name}" trazida p/ Lisboa (Verde).`:`Pijama "${p.name}" trocado c/ Coimbra (Verde).`);
+    save();render();toast(`${p.name}: Verde em Lisboa!`);
+  }else if(a==='st-l'){ui.stL=el.dataset.st;renderLisboaCats();}
+  else if(a==='rst-flt'){ui.qL='';ui.stL='all';ui.catL='all';$('q-lisboa').value='';$('cat-lisboa').value='all';renderLisboaCats();}
+  else if(a==='open-add-item'){openItemModal(null,el.dataset.loc||(ui.tab==='casa'?'casa':'lisboa'),el.dataset.cat);}
+  else if(a==='edit-item'){const it=state.items.find(i=>i.id===el.dataset.id);if(it)openItemModal(it);}
+  else if(a==='del-item'){
+    const it=state.items.find(i=>i.id===el.dataset.id);if(!it)return;
+    confirmDlg('Apagar peça?',`Eliminar "${it.name}"?`,'Apagar','btn-d',()=>{state.items=state.items.filter(i=>i.id!==it.id);log(`Apagada "${it.name}".`);save();render();toast('Peça apagada.');});
+  }else if(a==='set-st'){
+    const it=state.items.find(i=>i.id===el.dataset.id);if(!it||it.status===el.dataset.st)return;
+    it.status=el.dataset.st;if(it.status==='verde'){it.reasons=[];ui.mRet.delete(it.id);ui.mRetSync.delete(it.id);}
+    else if(it.status==='vermelho'){ui.mRet.add(it.id);ui.mRetSync.add(it.id);}else{ui.mRetSync.delete(it.id);}
+    log(`"${it.name}" → ${ST_LBL[it.status]}.`);save();render();
+  }else if(a==='tog-r'){
+    const it=state.items.find(i=>i.id===el.dataset.id);if(!it)return;
+    const i=it.reasons.indexOf(el.dataset.r);if(i>=0)it.reasons.splice(i,1);else it.reasons.push(el.dataset.r);
+    save();renderLisboaCats();
+  }else if(a==='u-inc'||a==='u-rst'){
+    const it=state.items.find(i=>i.id===el.dataset.id);if(!it)return;
+    it.uses=a==='u-inc'?it.uses+1:0;save();renderLisboaCats();
+  }else if(a==='mv-casa'){
+    const it=state.items.find(i=>i.id===el.dataset.id);if(!it)return;
+    it.location='casa';ui.mRet.delete(it.id);log(`"${it.name}" → Coimbra.`);save();render();toast(`"${it.name}" enviada p/ Coimbra.`);
+  }else if(a==='mk-green'){
+    const it=state.items.find(i=>i.id===el.dataset.id);if(!it)return;
+    it.status='verde';it.reasons=[];it.uses=0;log(`"${it.name}" marcada a Verde.`);save();render();
+  }else if(a==='mv-lisboa'){
+    const it=state.items.find(i=>i.id===el.dataset.id);if(!it)return;
+    it.location='lisboa';it.status='verde';it.reasons=[];it.uses=0;ui.mGo.delete(it.id);log(`"${it.name}" → Lisboa (Verde).`);save();render();toast(`"${it.name}" pronta em Lisboa!`);
+  }else if(a==='fi-st'){ui.fiSt=el.dataset.st;if(ui.fiSt==='verde')ui.fiR=[];renderModalReasons();}
+  else if(a==='fi-r'){const i=ui.fiR.indexOf(el.dataset.r);if(i>=0)ui.fiR.splice(i,1);else ui.fiR.push(el.dataset.r);renderModalReasons();}
+  else if(a==='open-add-shoe'){openShoeModal(null,el.dataset.loc);}
+  else if(a==='edit-shoe'){const s=state.shoes.find(c=>c.id===el.dataset.id);if(s)openShoeModal(s);}
+  else if(a==='tog-padel'){
+    const s=state.shoes.find(c=>c.id===el.dataset.id);if(!s)return;
+    s.isPadel=!s.isPadel;log(`"${s.name}" → ${s.isPadel?'Padel':'Uso diário'}.`);save();render();
+  }else if(a==='mv-shoe'){
+    const s=state.shoes.find(c=>c.id===el.dataset.id);if(!s)return;
+    s.location=el.dataset.to;ui.mRetSh.delete(s.id);ui.mGoSh.delete(s.id);log(`Calçado "${s.name}" → ${s.location==='lisboa'?'Lisboa':'Coimbra'}.`);save();render();
+  }else if(a==='del-shoe'){
+    const s=state.shoes.find(c=>c.id===el.dataset.id);if(!s)return;
+    confirmDlg('Apagar calçado?',`Eliminar "${s.name}"?`,'Apagar','btn-d',()=>{state.shoes=state.shoes.filter(c=>c.id!==s.id);log(`Calçado "${s.name}" apagado.`);save();render();toast('Calçado apagado.');});
+  }else if(a==='mr-uw'){const k=el.dataset.uw,d=parseInt(el.dataset.d,10);if(k==='boxers')ui.mRetB=clamp(ui.mRetB+d,0,state.underwear.boxers.vermelho,0);else ui.mRetM=clamp(ui.mRetM+d,0,state.underwear.meias.vermelho,0);renderMala();}
+  else if(a==='mg-uw'){const k=el.dataset.uw,d=parseInt(el.dataset.d,10);if(k==='boxers')ui.mGoB=clamp(ui.mGoB+d,0,30,0);else ui.mGoM=clamp(ui.mGoM+d,0,30,0);renderMala();}
+  else if(a==='fill-def'){
+    const m=computeMetrics();ui.mGoB=m.minDef.boxers;ui.mGoM=m.minDef.meias;
+    renderMala();toast('Défice de roupa interior preenchido!');
+  }else if(a==='cfm-ret'){
+    const its=[...ui.mRet],pjs=[...ui.mRetPij],shs=[...ui.mRetSh],bq=ui.mRetB||0,mq=ui.mRetM||0;
+    if(!its.length&&!pjs.length&&!shs.length&&!bq&&!mq){toast('Nada selecionado.','info');return;}
+    // Peças de roupa (V/A/R) movem-se p/ Coimbra mantendo estado e motivos
+    its.forEach(id=>{const i=state.items.find(x=>x.id===id);if(i)i.location='casa';});
+    // Pijama (V ou R) deixa Lisboa e fica pronto a repor via reserva de Coimbra
+    pjs.forEach(id=>{const p=state.pijama.find(x=>x.id===id);if(p){p.inLisboa=false;p.status='verde';p.uses=0;p.reasons=[];}});
+    shs.forEach(id=>{const s=state.shoes.find(x=>x.id===id);if(s)s.location='casa';});
+    state.underwear.boxers.vermelho=Math.max(0,state.underwear.boxers.vermelho-bq);
+    state.underwear.meias.vermelho=Math.max(0,state.underwear.meias.vermelho-mq);
+    resetMala();log(`Mala Lisboa→Coimbra (${its.length} peças, ${pjs.length} pijama, ${bq}B/${mq}M, ${shs.length} calç.).`);save();render();toast('Mala Lisboa → Coimbra confirmada!');
+  }else if(a==='cfm-go'){
+    const its=[...ui.mGo],pjs=[...ui.mGoPij],shs=[...ui.mGoSh],bq=ui.mGoB||0,mq=ui.mGoM||0;
+    if(!its.length&&!pjs.length&&!shs.length&&!bq&&!mq){toast('Nada selecionado.','info');return;}
+    its.forEach(id=>{const i=state.items.find(x=>x.id===id);if(i){i.location='lisboa';i.status='verde';i.reasons=[];i.uses=0;}});
+    pjs.forEach(id=>{const p=state.pijama.find(x=>x.id===id);if(p){p.inLisboa=true;p.status='verde';p.uses=0;p.reasons=[];}});
+    shs.forEach(id=>{const s=state.shoes.find(x=>x.id===id);if(s)s.location='lisboa';});
+    state.underwear.boxers.verde+=bq;state.underwear.meias.verde+=mq;
+    resetMala();log(`Mala Coimbra→Lisboa (${its.length} peças, ${pjs.length} pijama, +${bq}B/+${mq}M, ${shs.length} calç.).`);save();render();toast('Mala Coimbra → Lisboa confirmada!');
+  }else if(a==='rst-metas'){
+    state.metas={...DEF_METAS};ui.mGoB=ui.mGoM=null;log('Metas repostas (4 dias Seg–Qui).');save();render();toast('Padrão 4 dias reposto!');
+  }else if(a==='tog-md'){ui.prevMd=!ui.prevMd;renderSync();}
+  else if(a==='copy-md'){copyText(buildMd(),'Resumo Markdown copiado!','Copiar Resumo Markdown');}
+  else if(a==='copy-json'){copyText(JSON.stringify(state,null,2),'JSON copiado!','Copiar JSON');}
+  else if(a==='dl-json'){
+    try{const u=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'})),l=document.createElement('a');
+      l.href=u;l.download='guarda-roupa-lisboa.json';l.click();URL.revokeObjectURL(u);toast('JSON descarregado!');}catch(_){toast('Usa "Copiar JSON".','info');}
+  }else if(a==='open-imp'){$('imp-txt').value='';$('imp-file').value='';openModal('m-imp');}
+  else if(a==='do-import'){
+    try{const p=JSON.parse($('imp-txt').value.trim());if(!p||typeof p!=='object')throw 0;
+      state=sanitize(p);log('Backup JSON importado.');resetMala();save();closeModal('m-imp');render();toast('JSON importado!');}
+    catch(_){toast('JSON inválido.','err');}
+  }else if(a==='req-demo'){
+    confirmDlg('Carregar exemplos?','Substitui o inventário atual pelos exemplos iniciais.','Carregar','btn-p',()=>{state=demoState();resetMala();save();render();toast('Exemplos carregados!');});
+  }else if(a==='req-clear'){
+    confirmDlg('Limpar tudo?','Apaga peças normais, calçado e roupa interior (pijama passa a ficar apenas na reserva de Coimbra).','Limpar','btn-d',()=>{state=emptyState(state.metas);resetMala();save();render();toast('Inventário limpo.');});
+  }
+});
+
+document.addEventListener('input',e=>{
+  const el=e.target.closest('[data-action]');if(!el)return;
+  const a=el.dataset.action;
+  if(a==='search-l'){ui.qL=el.value;renderLisboaCats();}
+  else if(a==='shoe-name'&&!ui.shEdit&&!ui.shTouched){$('fs-padel').checked=PADEL_RX.test(el.value);}
+  else if(a==='mr-uw-inp'){
+    const k=el.dataset.uw,mx=state.underwear[k].vermelho,v=clamp(el.value,0,mx,0);
+    if(k==='boxers')ui.mRetB=v;else ui.mRetM=v;
+  }else if(a==='mg-uw-inp'){
+    const k=el.dataset.uw,v=clamp(el.value,0,30,0);
+    if(k==='boxers')ui.mGoB=v;else ui.mGoM=v;
+  }
+});
+
+document.addEventListener('change',e=>{
+  const el=e.target.closest('[data-action]');if(!el)return;
+  const a=el.dataset.action;
+  if(a==='cat-l'){ui.catL=el.value;renderLisboaCats();}
+  else if(a==='shoe-padel-chg'){ui.shTouched=true;}
+  else if(a==='mr-it'){el.checked?ui.mRet.add(el.dataset.id):ui.mRet.delete(el.dataset.id);}
+  else if(a==='mr-pij'){el.checked?ui.mRetPij.add(el.dataset.id):ui.mRetPij.delete(el.dataset.id);}
+  else if(a==='mr-sh'){el.checked?ui.mRetSh.add(el.dataset.id):ui.mRetSh.delete(el.dataset.id);}
+  else if(a==='mg-it'){el.checked?ui.mGo.add(el.dataset.id):ui.mGo.delete(el.dataset.id);}
+  else if(a==='mg-pij'){el.checked?ui.mGoPij.add(el.dataset.id):ui.mGoPij.delete(el.dataset.id);}
+  else if(a==='mg-sh'){el.checked?ui.mGoSh.add(el.dataset.id):ui.mGoSh.delete(el.dataset.id);}
+  else if(a==='mr-uw-inp'||a==='mg-uw-inp'){renderMala();}
+  else if(a==='imp-file'&&el.files?.[0]){
+    const r=new FileReader();r.onload=()=>{$('imp-txt').value=String(r.result||'');toast('Ficheiro lido!','info');};r.readAsText(el.files[0]);
+  }
+});
+
+document.addEventListener('submit',e=>{
+  const f=e.target.closest('[data-action]');if(!f)return;e.preventDefault();
+  const a=f.dataset.action;
+  if(a==='sub-item'){
+    const id=$('fi-id').value,name=$('fi-name').value.trim(),loc=$('fi-loc').value==='casa'?'casa':'lisboa',note=$('fi-note').value.trim();
+    const st=normSt(ui.fiSt),rs=st==='verde'?[]:[...ui.fiR];
+    if(!name){toast('Indica o nome da peça.','err');return;}
+    if(id){
+      const it=state.items.find(x=>x.id===id);
+      if(it){it.name=name;it.category=normCat($('fi-cat').value,name);it.location=loc;it.note=note;it.status=st;it.reasons=rs;log(`Editada "${it.name}".`);}
+    }else{
+      const ni={id:uid('it'),name,category:normCat($('fi-cat').value,name),location:loc,status:st,reasons:rs,uses:0,note};
+      state.items.unshift(ni);if(loc==='lisboa'&&st==='vermelho'){ui.mRet.add(ni.id);ui.mRetSync.add(ni.id);}
+      log(`Adicionada "${name}" (${ni.category}).`);
+    }
+    save();closeModal('m-item');render();toast('Peça guardada!');
+  }else if(a==='sub-shoe'){
+    const id=$('fs-id').value,name=$('fs-name').value.trim(),loc=$('fs-loc').value==='casa'?'casa':'lisboa',isPadel=$('fs-padel').checked,note=$('fs-note').value.trim();
+    if(!name){toast('Indica o nome do calçado.','err');return;}
+    if(id){
+      const s=state.shoes.find(x=>x.id===id);
+      if(s){s.name=name;s.location=loc;s.isPadel=isPadel;s.note=note;log(`Editado calçado "${name}".`);}
+    }else{
+      state.shoes.unshift({id:uid('sh'),name,location:loc,isPadel,note});log(`Adicionado calçado "${name}".`);
+    }
+    save();closeModal('m-shoe');render();toast('Calçado guardado!');
+  }else if(a==='sub-metas'){
+    const fd=new FormData(f),g=(k,mn,mx,fb)=>clamp(fd.get(k),mn,mx,fb);
+    const nm={
+      days:g('days',1,7,4),boxers:g('boxers',0,30,4),meias:g('meias',0,30,4),tops:g('tops',0,30,4),
+      camisolasMin:g('camisolasMin',0,15,1),camisolasIdeal:g('camisolasIdeal',0,20,3),
+      casacosMin:g('casacosMin',0,10,1),casacosIdeal:g('casacosIdeal',0,15,2),
+      calcas:g('calcas',0,15,2),sapatilhasMin:g('sapatilhasMin',0,10,1),sapatilhasIdeal:g('sapatilhasIdeal',0,10,2)
+    };
+    if(nm.camisolasIdeal<nm.camisolasMin)nm.camisolasIdeal=nm.camisolasMin;
+    if(nm.casacosIdeal<nm.casacosMin)nm.casacosIdeal=nm.casacosMin;
+    if(nm.sapatilhasIdeal<nm.sapatilhasMin)nm.sapatilhasIdeal=nm.sapatilhasMin;
+    state.metas=nm;ui.mGoB=ui.mGoM=null;log('Metas semanais guardadas.');save();render();toast('Metas guardadas!');
+  }
+});
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')['m-item','m-shoe','m-imp','m-cfm','m-cpy'].forEach(closeModal);});
+
+// Inicialização
+$('cat-lisboa').innerHTML='<option value="all">Todas as categorias (6)</option>'+CATS.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+load();
+render();
+})();
+</script>
+</body>
+</html>
